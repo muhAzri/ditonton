@@ -77,5 +77,60 @@ void main() {
       expect(result.seasonNumber, 1);
       expect(result.voteAverage, 8.5);
     });
+
+    test('season entity shoukd be compareable', () {
+      const seasonModel1 = SeasonModel(
+        airDate: '2022-01-01',
+        episodeCount: 10,
+        id: 1,
+        name: 'Season 1',
+        overview: 'Season 1 overview',
+        posterPath: '/path/to/poster.jpg',
+        seasonNumber: 1,
+        voteAverage: 8.5,
+      );
+
+      const seasonModel2 = SeasonModel(
+        airDate: '2022-01-01',
+        episodeCount: 10,
+        id: 1,
+        name: 'Season 1',
+        overview: 'Season 1 overview',
+        posterPath: '/path/to/poster.jpg',
+        seasonNumber: 1,
+        voteAverage: 8.5,
+      );
+
+      final season1 = seasonModel1.toEntity();
+      final season2 = seasonModel2.toEntity();
+
+      expect(season1.props, season2.props);
+    });
+
+    test('get props should return list of properties', () {
+      const seasonModel1 = SeasonModel(
+        airDate: '2022-01-01',
+        episodeCount: 10,
+        id: 1,
+        name: 'Season 1',
+        overview: 'Season 1 overview',
+        posterPath: '/path/to/poster.jpg',
+        seasonNumber: 1,
+        voteAverage: 8.5,
+      );
+
+      const seasonModel2 = SeasonModel(
+        airDate: '2022-01-01',
+        episodeCount: 10,
+        id: 1,
+        name: 'Season 1',
+        overview: 'Season 1 overview',
+        posterPath: '/path/to/poster.jpg',
+        seasonNumber: 1,
+        voteAverage: 8.5,
+      );
+
+      expect(seasonModel1.props, seasonModel2.props);
+    });
   });
 }

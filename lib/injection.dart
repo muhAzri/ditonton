@@ -45,7 +45,11 @@ import 'presentation/provider/top_rated_series_notifier.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+Future<void> init() async {
+  final database = await DatabaseHelper.initDb();
+  // helper
+  locator.registerFactory(() => DatabaseHelper(database: database));
+
   // provider
   locator.registerFactory(
     () => MovieListNotifier(
@@ -168,9 +172,6 @@ void init() {
       () => SeriesRemoteDataSourceImpl(client: locator()));
   locator.registerLazySingleton<SeriesLocalDataSource>(
       () => SeriesLocalDataSourceImpl(databaseHelper: locator()));
-
-  // helper
-  locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
   // external
   locator.registerLazySingleton(() => http.Client());

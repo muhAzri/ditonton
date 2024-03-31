@@ -5,64 +5,58 @@ import 'package:ditonton/data/models/series_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static DatabaseHelper? _databaseHelper;
-  DatabaseHelper._instance() {
-    _databaseHelper = this;
-  }
-
-  factory DatabaseHelper() => _databaseHelper ?? DatabaseHelper._instance();
-
-  static Database? _database;
-
-  Future<Database?> get database async {
-    _database ??= await _initDb();
-    return _database;
-  }
+  final Database database;
 
   static const String _tblWatchlist = 'watchlist';
   static const String _tblSeriesWatchList = 'series_watchlist';
 
-  Future<Database> _initDb() async {
+  DatabaseHelper({required this.database});
+
+  static Future<Database> initDb() async {
     final path = await getDatabasesPath();
     final databasePath = '$path/ditonton.db';
 
-    var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
+    void onCreate(Database db, int version) async {
+      await db.execute(
+        '''
+          CREATE TABLE  $_tblWatchlist (
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            overview TEXT,
+            posterPath TEXT
+          );
+        ''',
+      );
+
+      await db.execute(
+        '''
+          CREATE TABLE  $_tblSeriesWatchList (
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                overview TEXT,
+                posterPath TEXT
+              );
+        ''',
+      );
+    }
+
+    var db = await openDatabase(databasePath, version: 1, onCreate: onCreate);
     return db;
   }
 
-  void _onCreate(Database db, int version) async {
-    await db.execute('''
-    CREATE TABLE  $_tblWatchlist (
-      id INTEGER PRIMARY KEY,
-      title TEXT,
-      overview TEXT,
-      posterPath TEXT
-    );
-    ''');
-
-    await db.execute('''
-    CREATE TABLE  $_tblSeriesWatchList (
-          id INTEGER PRIMARY KEY,
-          name TEXT,
-          overview TEXT,
-          posterPath TEXT
-        );
-    ''');
-  }
-
   Future<int> insertWatchlist(MovieTable movie) async {
-    final db = await database;
-    return await db!.insert(_tblWatchlist, movie.toJson());
+    final db = database;
+    return await db.insert(_tblWatchlist, movie.toJson());
   }
 
   Future<int> insertSeriesWatchlist(SeriesTable series) async {
-    final db = await database;
-    return await db!.insert(_tblSeriesWatchList, series.toJson());
+    final db = database;
+    return await db.insert(_tblSeriesWatchList, series.toJson());
   }
 
   Future<int> removeWatchlist(MovieTable movie) async {
-    final db = await database;
-    return await db!.delete(
+    final db = database;
+    return await db.delete(
       _tblWatchlist,
       where: 'id = ?',
       whereArgs: [movie.id],
@@ -70,8 +64,8 @@ class DatabaseHelper {
   }
 
   Future<int> removeSeriesWatchlist(SeriesTable series) async {
-    final db = await database;
-    return await db!.delete(
+    final db = database;
+    return await db.delete(
       _tblSeriesWatchList,
       where: 'id = ?',
       whereArgs: [series.id],
@@ -79,8 +73,8 @@ class DatabaseHelper {
   }
 
   Future<Map<String, dynamic>?> getMovieById(int id) async {
-    final db = await database;
-    final results = await db!.query(
+    final db = database;
+    final results = await db.query(
       _tblWatchlist,
       where: 'id = ?',
       whereArgs: [id],
@@ -94,8 +88,8 @@ class DatabaseHelper {
   }
 
   Future<Map<String, dynamic>?> getSeriesById(int id) async {
-    final db = await database;
-    final results = await db!.query(
+    final db = database;
+    final results = await db.query(
       _tblSeriesWatchList,
       where: 'id = ?',
       whereArgs: [id],
@@ -109,16 +103,16 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> getWatchlistMovies() async {
-    final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(_tblWatchlist);
+    final db = database;
+    final List<Map<String, dynamic>> results = await db.query(_tblWatchlist);
 
     return results;
   }
 
   Future<List<Map<String, dynamic>>> getWatchlistSeries() async {
-    final db = await database;
+    final db = database;
     final List<Map<String, dynamic>> results =
-        await db!.query(_tblSeriesWatchList);
+        await db.query(_tblSeriesWatchList);
 
     return results;
   }
