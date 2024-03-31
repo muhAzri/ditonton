@@ -14,10 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Install Flutter
+        uses: subosito/flutter-download-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '3.10.0'  # Specify the Flutter version you want
 
       - name: Get dependencies
         run: |
