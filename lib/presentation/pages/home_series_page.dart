@@ -125,7 +125,7 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
               _buildSubHeading(
                 title: 'Top Rated',
                 onTap: () =>
-                    Navigator.pushNamed(context, TopRatedSeries.ROUTE_NAME),
+                    Navigator.pushNamed(context, TopRatedSeriesPage.ROUTE_NAME),
               ),
               Consumer<SeriesListNotifier>(builder: (context, data, child) {
                 final state = data.topRatedSeriesState;

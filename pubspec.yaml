@@ -44,6 +44,7 @@ dev_dependencies:
   build_runner: ^2.0.4
   flutter_test:
     sdk: flutter
+  mocktail_image_network: ^1.1.0
 
 
 # For information on the generic Dart part of this file, see the

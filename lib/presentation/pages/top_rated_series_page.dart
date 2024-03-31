@@ -4,14 +4,14 @@ import 'package:ditonton/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TopRatedSeries extends StatefulWidget {
+class TopRatedSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/top-rated-serie';
 
   @override
-  _TopRatedSeriesState createState() => _TopRatedSeriesState();
+  _TopRatedSeriesPageState createState() => _TopRatedSeriesPageState();
 }
 
-class _TopRatedSeriesState extends State<TopRatedSeries> {
+class _TopRatedSeriesPageState extends State<TopRatedSeriesPage> {
   @override
   void initState() {
     super.initState();
