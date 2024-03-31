@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 class WatchlistPage extends StatefulWidget {
   static const ROUTE_NAME = '/watchlist';
 
+  const WatchlistPage({Key? key}) : super(key: key);
+
   @override
   _WatchlistPageState createState() => _WatchlistPageState();
 }
@@ -36,6 +38,7 @@ class _WatchlistPageState extends State<WatchlistPage>
     routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
+  @override
   void didPopNext() {
     Provider.of<WatchlistMovieNotifier>(context, listen: false)
         .fetchWatchlistMovies();
@@ -45,10 +48,10 @@ class _WatchlistPageState extends State<WatchlistPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Watchlist'),
+        title: const Text('Watchlist'),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: 'Movies'),
             Tab(text: 'Series'),
           ],
@@ -56,7 +59,7 @@ class _WatchlistPageState extends State<WatchlistPage>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
+        children: const [
           MovieContent(),
           SeriesContent(),
         ],
@@ -73,6 +76,8 @@ class _WatchlistPageState extends State<WatchlistPage>
 }
 
 class MovieContent extends StatelessWidget {
+  const MovieContent({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -80,7 +85,7 @@ class MovieContent extends StatelessWidget {
       child: Consumer<WatchlistMovieNotifier>(
         builder: (context, data, child) {
           if (data.watchlistState == RequestState.Loading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (data.watchlistState == RequestState.Loaded) {
@@ -93,7 +98,7 @@ class MovieContent extends StatelessWidget {
             );
           } else {
             return Center(
-              key: Key('error_message'),
+              key: const Key('error_message'),
               child: Text(data.message),
             );
           }
@@ -104,6 +109,8 @@ class MovieContent extends StatelessWidget {
 }
 
 class SeriesContent extends StatelessWidget {
+  const SeriesContent({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -111,7 +118,7 @@ class SeriesContent extends StatelessWidget {
       child: Consumer<WatchlistSeriesNotifier>(
         builder: (context, data, child) {
           if (data.watchlistState == RequestState.Loading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (data.watchlistState == RequestState.Loaded) {
@@ -124,7 +131,7 @@ class SeriesContent extends StatelessWidget {
             );
           } else {
             return Center(
-              key: Key('error_message'),
+              key: const Key('error_message'),
               child: Text(data.message),
             );
           }

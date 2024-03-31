@@ -10,7 +10,7 @@ import '../../dummy_data/dummy_objects.dart';
 void main() {
   testWidgets('SerisCard widget test', (WidgetTester tester) async {
     // Arrange
-    final series = testSeries;
+    const series = testSeries;
 
     await mockNetworkImages(() async {
       await tester.pumpWidget(

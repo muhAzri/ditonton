@@ -56,7 +56,7 @@ void main() {
 
     test('toJson should return a valid JSON map', () {
       // Arrange
-      final model = SeriesDetailModel(
+      const model = SeriesDetailModel(
         adult: false,
         backdropPath: "/backdrop.jpg",
         genres: [
@@ -106,7 +106,7 @@ void main() {
 
     test('toEntity should return a valid SeriesDetail entity', () {
       // Arrange
-      final model = SeriesDetailModel(
+      const model = SeriesDetailModel(
         adult: false,
         backdropPath: "/backdrop.jpg",
         genres: [
@@ -149,7 +149,7 @@ void main() {
 
     test('props should return correct list of properties', () {
       // Arrange
-      final model1 = SeriesDetailModel(
+      const model1 = SeriesDetailModel(
         adult: false,
         backdropPath: "/backdrop.jpg",
         genres: [
@@ -171,7 +171,7 @@ void main() {
         voteAverage: 7.8,
         voteCount: 100,
       );
-      final model2 = SeriesDetailModel(
+      const model2 = SeriesDetailModel(
         adult: false,
         backdropPath: "/backdrop.jpg",
         genres: [

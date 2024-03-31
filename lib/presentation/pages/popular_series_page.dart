@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 class PopularSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/popular-series';
 
+  const PopularSeriesPage({Key? key}) : super(key: key);
+
   @override
   _PopularSeriesPageState createState() => _PopularSeriesPageState();
 }
@@ -24,14 +26,14 @@ class _PopularSeriesPageState extends State<PopularSeriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Popular Series'),
+        title: const Text('Popular Series'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Consumer<PopularSeriesNotifier>(
           builder: (context, data, child) {
             if (data.state == RequestState.Loading) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (data.state == RequestState.Loaded) {
@@ -44,7 +46,7 @@ class _PopularSeriesPageState extends State<PopularSeriesPage> {
               );
             } else {
               return Center(
-                key: Key('error_message'),
+                key: const Key('error_message'),
                 child: Text(data.message),
               );
             }

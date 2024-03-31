@@ -2,7 +2,7 @@ import 'package:ditonton/domain/entities/genre.dart';
 import 'package:equatable/equatable.dart';
 
 class SeriesDetail extends Equatable {
-  SeriesDetail({
+  const SeriesDetail({
     required this.adult,
     required this.backdropPath,
     required this.genres,

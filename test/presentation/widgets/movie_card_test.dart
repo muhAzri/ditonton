@@ -10,7 +10,7 @@ import '../../dummy_data/dummy_objects.dart';
 void main() {
   testWidgets('MovieCard widget test', (WidgetTester tester) async {
     // Arrange
-    final movie = testMovie;
+    const movie = testMovie;
 
     await mockNetworkImages(() async {
       await tester.pumpWidget(

@@ -112,7 +112,7 @@ void main() {
   });
 
   group('get movie detail', () {
-    final tId = 1;
+    const tId = 1;
     final tMovieDetail = SeriesDetailModel.fromJson(
         json.decode(readJson('dummy_data/series_detail.json')));
 
@@ -143,7 +143,7 @@ void main() {
     final tSeriesList = SeriesResponse.fromJson(
             json.decode(readJson('dummy_data/series_recommendations.json')))
         .seriesList;
-    final tId = 1;
+    const tId = 1;
 
     test('should return list of Series Model when the response code is 200',
         () async {
@@ -175,7 +175,7 @@ void main() {
     final tSearchResult = SeriesResponse.fromJson(
             json.decode(readJson('dummy_data/search_breaking_bad_series.json')))
         .seriesList;
-    final tQuery = 'Breaking Bad';
+    const tQuery = 'Breaking Bad';
 
     test('should return list of series when response code is 200', () async {
       // arrange

@@ -64,7 +64,7 @@ void main() {
 
     test('toJson should return a valid JSON map', () {
       // Arrange
-      final model = MovieDetailResponse(
+      const model = MovieDetailResponse(
         adult: false,
         backdropPath: "/backdrop.jpg",
         budget: 10000000,
@@ -122,7 +122,7 @@ void main() {
 
     test('toEntity should return a valid MovieDetail entity', () {
       // Arrange
-      final model = MovieDetailResponse(
+      const model = MovieDetailResponse(
         adult: false,
         backdropPath: "/backdrop.jpg",
         budget: 10000000,
@@ -170,7 +170,7 @@ void main() {
 
     test('props should return correct list of properties', () {
       // Arrange
-      final model1 = MovieDetailResponse(
+      const model1 = MovieDetailResponse(
         adult: false,
         backdropPath: "/backdrop.jpg",
         budget: 10000000,
@@ -196,7 +196,7 @@ void main() {
         voteAverage: 7.8,
         voteCount: 100,
       );
-      final model2 = MovieDetailResponse(
+      const model2 = MovieDetailResponse(
         adult: false,
         backdropPath: "/backdrop.jpg",
         budget: 10000000,

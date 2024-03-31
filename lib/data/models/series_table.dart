@@ -8,7 +8,7 @@ class SeriesTable extends Equatable {
   final String? posterPath;
   final String? overview;
 
-  SeriesTable({
+  const SeriesTable({
     required this.id,
     required this.name,
     required this.posterPath,

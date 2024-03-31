@@ -6,7 +6,7 @@ import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
 
-final testMovie = Movie(
+const testMovie = Movie(
   adult: false,
   backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
   genreIds: [14, 28],
@@ -25,7 +25,7 @@ final testMovie = Movie(
 
 final testMovieList = [testMovie];
 
-final testMovieDetail = MovieDetail(
+const testMovieDetail = MovieDetail(
   adult: false,
   backdropPath: 'backdropPath',
   genres: [Genre(id: 1, name: 'Action')],
@@ -40,14 +40,14 @@ final testMovieDetail = MovieDetail(
   voteCount: 1,
 );
 
-final testWatchlistMovie = Movie.watchlist(
+const testWatchlistMovie = Movie.watchlist(
   id: 1,
   title: 'title',
   posterPath: 'posterPath',
   overview: 'overview',
 );
 
-final testMovieTable = MovieTable(
+const testMovieTable = MovieTable(
   id: 1,
   title: 'title',
   posterPath: 'posterPath',
@@ -61,7 +61,7 @@ final testMovieMap = {
   'title': 'title',
 };
 
-final testSeriesTable = SeriesTable(
+const testSeriesTable = SeriesTable(
   id: 1,
   name: 'name',
   posterPath: 'posterPath',
@@ -75,14 +75,14 @@ final testSeriesMap = {
   'name': 'name',
 };
 
-final testWatchlistSeries = Series.watchlist(
+const testWatchlistSeries = Series.watchlist(
   id: 1,
   name: 'name',
   posterPath: 'posterPath',
   overview: 'overview',
 );
 
-final testSeriesDetail = SeriesDetail(
+const testSeriesDetail = SeriesDetail(
   adult: false,
   backdropPath: 'backdropPath',
   genres: [Genre(id: 1, name: 'Action')],
@@ -96,7 +96,7 @@ final testSeriesDetail = SeriesDetail(
   firstAirDate: '2002-05-01',
 );
 
-final testSeries = Series(
+const testSeries = Series(
   backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
   genreIds: [14, 28],
   id: 557,

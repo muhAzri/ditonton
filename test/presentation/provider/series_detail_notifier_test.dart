@@ -49,9 +49,9 @@ void main() {
       });
   });
 
-  final tId = 1;
+  const tId = 1;
 
-  final tSeries = Series(
+  const tSeries = Series(
     backdropPath: 'backdropPath',
     genreIds: [1, 2, 3],
     id: 1,
@@ -68,7 +68,7 @@ void main() {
 
   void _arrangeUsecase() {
     when(mockSeriesDetail.execute(tId))
-        .thenAnswer((_) async => Right(testSeriesDetail));
+        .thenAnswer((_) async => const Right(testSeriesDetail));
     when(mockGetSeriesRecommendations.execute(tId))
         .thenAnswer((_) async => Right(tSeriesList));
   }
@@ -142,9 +142,9 @@ void main() {
     test('should update error message when request in successful', () async {
       // arrange
       when(mockSeriesDetail.execute(tId))
-          .thenAnswer((_) async => Right(testSeriesDetail));
+          .thenAnswer((_) async => const Right(testSeriesDetail));
       when(mockGetSeriesRecommendations.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Failed')));
+          .thenAnswer((_) async => const Left(ServerFailure('Failed')));
       // act
       await provider.fetchSeriesDetail(tId);
       // assert
@@ -166,7 +166,7 @@ void main() {
     test('should execute save watchlist when function called', () async {
       // arrange
       when(mockSaveSeriesWatchlist.execute(testSeriesDetail))
-          .thenAnswer((_) async => Right('Success'));
+          .thenAnswer((_) async => const Right('Success'));
       when(getWatchListSeriesStatus.execute(testSeriesDetail.id))
           .thenAnswer((_) async => true);
       // act
@@ -178,7 +178,7 @@ void main() {
     test('should execute remove watchlist when function called', () async {
       // arrange
       when(mockRemoveSeriesWatchlist.execute(testSeriesDetail))
-          .thenAnswer((_) async => Right('Removed'));
+          .thenAnswer((_) async => const Right('Removed'));
       when(getWatchListSeriesStatus.execute(testSeriesDetail.id))
           .thenAnswer((_) async => false);
       // act
@@ -190,7 +190,7 @@ void main() {
     test('should update watchlist status when add watchlist success', () async {
       // arrange
       when(mockSaveSeriesWatchlist.execute(testSeriesDetail))
-          .thenAnswer((_) async => Right('Added to Watchlist'));
+          .thenAnswer((_) async => const Right('Added to Watchlist'));
       when(getWatchListSeriesStatus.execute(testSeriesDetail.id))
           .thenAnswer((_) async => true);
       // act
@@ -205,7 +205,7 @@ void main() {
     test('should update watchlist message when add watchlist failed', () async {
       // arrange
       when(mockSaveSeriesWatchlist.execute(testSeriesDetail))
-          .thenAnswer((_) async => Left(DatabaseFailure('Failed')));
+          .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
       when(getWatchListSeriesStatus.execute(testSeriesDetail.id))
           .thenAnswer((_) async => false);
       // act
@@ -220,7 +220,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockSeriesDetail.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       when(mockGetSeriesRecommendations.execute(tId))
           .thenAnswer((_) async => Right(tSeriesList));
       // act

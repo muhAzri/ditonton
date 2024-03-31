@@ -16,7 +16,7 @@ void main() {
   });
 
   final tSeries = <Series>[];
-  final tQuery = 'Breaking Bad';
+  const tQuery = 'Breaking Bad';
 
   test('should get list of movies from the repository', () async {
     // arrange

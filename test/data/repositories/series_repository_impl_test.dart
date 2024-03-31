@@ -27,7 +27,7 @@ void main() {
       localDataSource: mockLocalDataSource,
     );
   });
-  final tSeriesModel = SeriesModel(
+  const tSeriesModel = SeriesModel(
     backdropPath: '/bsNm9z2TJfe0WO3RedPGWQ8mG1X.jpg',
     genreIds: [18, 80],
     id: 1396,
@@ -42,7 +42,7 @@ void main() {
     voteCount: 11536,
   );
 
-  final tSeries = Series(
+  const tSeries = Series(
     backdropPath: '/bsNm9z2TJfe0WO3RedPGWQ8mG1X.jpg',
     genreIds: [18, 80],
     id: 1396,
@@ -85,7 +85,7 @@ void main() {
       final result = await repository.getOnAirSeries();
       // assert
       verify(mockRemoteDataSource.getOnAirSeries());
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(const Left(ServerFailure(''))));
     });
 
     test(
@@ -93,13 +93,13 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getOnAirSeries())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getOnAirSeries();
       // assert
       verify(mockRemoteDataSource.getOnAirSeries());
       expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -126,7 +126,7 @@ void main() {
       // act
       final result = await repository.getPopularSeries();
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, const Left(ServerFailure('')));
     });
 
     test(
@@ -134,12 +134,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getPopularSeries())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getPopularSeries();
       // assert
       expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+          result, const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
@@ -165,7 +165,7 @@ void main() {
       // act
       final result = await repository.getTopRatedSeries();
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, const Left(ServerFailure('')));
     });
 
     test(
@@ -173,18 +173,18 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getTopRatedSeries())
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getTopRatedSeries();
       // assert
       expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+          result, const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
   group('Get Series Detail', () {
-    final tId = 1;
-    final tMovieResponse = SeriesDetailModel(
+    const tId = 1;
+    const tMovieResponse = SeriesDetailModel(
       adult: false,
       backdropPath: 'backdropPath',
       genres: [GenreModel(id: 1, name: 'Action')],
@@ -214,7 +214,7 @@ void main() {
       final result = await repository.getSeriesDetail(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesDetail(tId));
-      expect(result, equals(Right(testSeriesDetail)));
+      expect(result, equals(const Right(testSeriesDetail)));
     });
 
     test(
@@ -227,7 +227,7 @@ void main() {
       final result = await repository.getSeriesDetail(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesDetail(tId));
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(const Left(ServerFailure(''))));
     });
 
     test(
@@ -235,19 +235,19 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getSeriesDetail(tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getSeriesDetail(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesDetail(tId));
       expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
   group('Get Series Recommendations', () {
     final tSeriesList = <SeriesModel>[];
-    final tId = 1;
+    const tId = 1;
 
     test('should return data (series list) when the call is successful',
         () async {
@@ -273,7 +273,7 @@ void main() {
       final result = await repository.getSeriesRecommendations(tId);
       // assertbuild runner
       verify(mockRemoteDataSource.getSeriesRecommendations(tId));
-      expect(result, equals(Left(ServerFailure(''))));
+      expect(result, equals(const Left(ServerFailure(''))));
     });
 
     test(
@@ -281,18 +281,18 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.getSeriesRecommendations(tId))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.getSeriesRecommendations(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesRecommendations(tId));
       expect(result,
-          equals(Left(ConnectionFailure('Failed to connect to the network'))));
+          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
   group('Seach Series', () {
-    final tQuery = 'breaking bad';
+    const tQuery = 'breaking bad';
 
     test('should return series list when call to data source is successful',
         () async {
@@ -315,7 +315,7 @@ void main() {
       // act
       final result = await repository.searchSeries(tQuery);
       // assert
-      expect(result, Left(ServerFailure('')));
+      expect(result, const Left(ServerFailure('')));
     });
 
     test(
@@ -323,12 +323,12 @@ void main() {
         () async {
       // arrange
       when(mockRemoteDataSource.searchSeries(tQuery))
-          .thenThrow(SocketException('Failed to connect to the network'));
+          .thenThrow(const SocketException('Failed to connect to the network'));
       // act
       final result = await repository.searchSeries(tQuery);
       // assert
       expect(
-          result, Left(ConnectionFailure('Failed to connect to the network')));
+          result, const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
@@ -340,7 +340,7 @@ void main() {
       // act
       final result = await repository.saveWatchlist(testSeriesDetail);
       // assert
-      expect(result, Right('Added to Watchlist'));
+      expect(result, const Right('Added to Watchlist'));
     });
 
     test('should return DatabaseFailure when saving unsuccessful', () async {
@@ -350,7 +350,7 @@ void main() {
       // act
       final result = await repository.saveWatchlist(testSeriesDetail);
       // assert
-      expect(result, Left(DatabaseFailure('Failed to add watchlist')));
+      expect(result, const Left(DatabaseFailure('Failed to add watchlist')));
     });
   });
 
@@ -362,7 +362,7 @@ void main() {
       // act
       final result = await repository.removeWatchlist(testSeriesDetail);
       // assert
-      expect(result, Right('Removed from watchlist'));
+      expect(result, const Right('Removed from watchlist'));
     });
 
     test('should return DatabaseFailure when remove unsuccessful', () async {
@@ -372,14 +372,14 @@ void main() {
       // act
       final result = await repository.removeWatchlist(testSeriesDetail);
       // assert
-      expect(result, Left(DatabaseFailure('Failed to remove watchlist')));
+      expect(result, const Left(DatabaseFailure('Failed to remove watchlist')));
     });
   });
 
   group('get watchlist status', () {
     test('should return watch status whether data is found', () async {
       // arrange
-      final tId = 1;
+      const tId = 1;
       when(mockLocalDataSource.getSeriesById(tId))
           .thenAnswer((_) async => null);
       // act

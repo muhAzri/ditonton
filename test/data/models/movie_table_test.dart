@@ -8,7 +8,7 @@ void main() {
   group('MovieTable', () {
     test('fromEntity should return a valid MovieTable instance', () {
       // Arrange
-      final movieDetail = testMovieDetail;
+      const movieDetail = testMovieDetail;
 
       // Act
       final result = MovieTable.fromEntity(movieDetail);
@@ -43,7 +43,7 @@ void main() {
 
     test('toJson should return a valid JSON map', () {
       // Arrange
-      final movieTable = MovieTable(
+      const movieTable = MovieTable(
         id: 1,
         title: "Movie Title",
         posterPath: "/poster.jpg",
@@ -63,7 +63,7 @@ void main() {
 
     test('toEntity should return a Movie entity', () {
       // Arrange
-      final movieTable = MovieTable(
+      const movieTable = MovieTable(
         id: 1,
         title: "Movie Title",
         posterPath: "/poster.jpg",
@@ -83,13 +83,13 @@ void main() {
 
     test('props should return correct list of properties', () {
       // Arrange
-      final movieTable1 = MovieTable(
+      const movieTable1 = MovieTable(
         id: 1,
         title: "Movie Title",
         posterPath: "/poster.jpg",
         overview: "Movie overview",
       );
-      final movieTable2 = MovieTable(
+      const movieTable2 = MovieTable(
         id: 1,
         title: "Movie Title",
         posterPath: "/poster.jpg",

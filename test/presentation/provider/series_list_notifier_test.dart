@@ -34,7 +34,7 @@ void main() {
       });
   });
 
-  final tSeries = Series(
+  const tSeries = Series(
     backdropPath: 'backdropPath',
     genreIds: [1, 2, 3],
     id: 1,
@@ -89,7 +89,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetOnAirSeries.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchOnAirSeries();
       // assert
@@ -127,7 +127,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetPopularSeries.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchPopularSeries();
       // assert
@@ -164,7 +164,7 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetTopRatedSeries.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchTopRatedSeries();
       // assert

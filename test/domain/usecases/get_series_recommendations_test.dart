@@ -15,7 +15,7 @@ void main() {
     usecase = GetSeriesRecommendations(mockSeriesRepository);
   });
 
-  final tId = 1;
+  const tId = 1;
   final tSeries = <Series>[];
 
   test('should get list of series from the repository', () async {

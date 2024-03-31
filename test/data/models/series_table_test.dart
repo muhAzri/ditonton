@@ -8,7 +8,7 @@ void main() {
   group('SeriesTable', () {
     test('fromEntity should return a valid SeriesTable instance', () {
       // Arrange
-      final seriesDetail = testSeriesDetail;
+      const seriesDetail = testSeriesDetail;
 
       // Act
       final result = SeriesTable.fromEntity(seriesDetail);
@@ -43,7 +43,7 @@ void main() {
 
     test('toJson should return a valid JSON map', () {
       // Arrange
-      final seriesTable = SeriesTable(
+      const seriesTable = SeriesTable(
         id: 1,
         name: "Series Name",
         posterPath: "/poster.jpg",
@@ -63,7 +63,7 @@ void main() {
 
     test('toEntity should return a Series entity', () {
       // Arrange
-      final seriesTable = SeriesTable(
+      const seriesTable = SeriesTable(
         id: 1,
         name: "Series Name",
         posterPath: "/poster.jpg",
@@ -83,13 +83,13 @@ void main() {
 
     test('props should return correct list of properties', () {
       // Arrange
-      final seriesTable1 = SeriesTable(
+      const seriesTable1 = SeriesTable(
         id: 1,
         name: "Series Name",
         posterPath: "/poster.jpg",
         overview: "Series overview",
       );
-      final seriesTable2 = SeriesTable(
+      const seriesTable2 = SeriesTable(
         id: 1,
         name: "Series Name",
         posterPath: "/poster.jpg",

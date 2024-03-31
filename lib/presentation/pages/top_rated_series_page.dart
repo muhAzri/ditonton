@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 class TopRatedSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/top-rated-serie';
 
+  const TopRatedSeriesPage({Key? key}) : super(key: key);
+
   @override
   _TopRatedSeriesPageState createState() => _TopRatedSeriesPageState();
 }
@@ -24,14 +26,14 @@ class _TopRatedSeriesPageState extends State<TopRatedSeriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Top Rated Series'),
+        title: const Text('Top Rated Series'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Consumer<TopRatedSeriesNotifier>(
           builder: (context, data, child) {
             if (data.state == RequestState.Loading) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (data.state == RequestState.Loaded) {
@@ -44,7 +46,7 @@ class _TopRatedSeriesPageState extends State<TopRatedSeriesPage> {
               );
             } else {
               return Center(
-                key: Key('error_message'),
+                key: const Key('error_message'),
                 child: Text(data.message),
               );
             }

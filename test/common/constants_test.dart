@@ -9,12 +9,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   test('Constants have correct values', () {
     expect(BASE_IMAGE_URL, equals('https://image.tmdb.org/t/p/w500'));
-    expect(kRichBlack, equals(Color(0xFF000814)));
-    expect(kOxfordBlue, equals(Color(0xFF001D3D)));
-    expect(kPrussianBlue, equals(Color(0xFF003566)));
-    expect(kMikadoYellow, equals(Color(0xFFffc300)));
-    expect(kDavysGrey, equals(Color(0xFF4B5358)));
-    expect(kGrey, equals(Color(0xFF303030)));
+    expect(kRichBlack, equals(const Color(0xFF000814)));
+    expect(kOxfordBlue, equals(const Color(0xFF001D3D)));
+    expect(kPrussianBlue, equals(const Color(0xFF003566)));
+    expect(kMikadoYellow, equals(const Color(0xFFffc300)));
+    expect(kDavysGrey, equals(const Color(0xFF4B5358)));
+    expect(kGrey, equals(const Color(0xFF303030)));
   });
 
   test('Text Styles are correctly defined', () {

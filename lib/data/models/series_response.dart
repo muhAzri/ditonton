@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class SeriesResponse extends Equatable {
   final List<SeriesModel> seriesList;
 
-  SeriesResponse({required this.seriesList});
+  const SeriesResponse({required this.seriesList});
 
   factory SeriesResponse.fromJson(Map<String, dynamic> json) => SeriesResponse(
         seriesList: List<SeriesModel>.from((json["results"] as List)

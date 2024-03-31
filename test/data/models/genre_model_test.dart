@@ -22,7 +22,7 @@ void main() {
 
     test('toJson should return a valid JSON map', () {
       // Arrange
-      final genreModel = GenreModel(id: 1, name: "Action");
+      const genreModel = GenreModel(id: 1, name: "Action");
 
       // Act
       final result = genreModel.toJson();
@@ -35,7 +35,7 @@ void main() {
 
     test('toEntity should return a Genre entity', () {
       // Arrange
-      final genreModel = GenreModel(id: 1, name: "Action");
+      const genreModel = GenreModel(id: 1, name: "Action");
 
       // Act
       final result = genreModel.toEntity();
@@ -48,8 +48,8 @@ void main() {
 
     test('props should return correct list of properties', () {
       // Arrange
-      final genreModel1 = GenreModel(id: 1, name: "Action");
-      final genreModel2 = GenreModel(id: 1, name: "Action");
+      const genreModel1 = GenreModel(id: 1, name: "Action");
+      const genreModel2 = GenreModel(id: 1, name: "Action");
 
       // Act & Assert
       expect(genreModel1.props, equals([1, "Action"]));

@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../json_reader.dart';
 
 void main() {
-  final tSeriesModel = SeriesModel(
+  const tSeriesModel = SeriesModel(
     backdropPath: "/mAJ84W6I8I272Da87qplS2Dp9ST.jpg",
     genreIds: [9648, 18],
     id: 202250,
@@ -22,7 +22,7 @@ void main() {
     voteCount: 13,
   );
   final tSeriesResponseModel =
-      SeriesResponse(seriesList: <SeriesModel>[tSeriesModel]);
+      const SeriesResponse(seriesList: <SeriesModel>[tSeriesModel]);
   group('fromJson', () {
     test('should return a valid model from JSON', () async {
       // arrange

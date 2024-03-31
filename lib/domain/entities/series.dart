@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Series extends Equatable {
-  Series({
+  const Series({
     required this.backdropPath,
     required this.genreIds,
     required this.id,
@@ -15,7 +15,7 @@ class Series extends Equatable {
     required this.voteCount,
   });
 
-  Series.watchlist({
+  const Series.watchlist({
     required this.id,
     required this.overview,
     required this.posterPath,

@@ -2,7 +2,7 @@ import 'package:ditonton/domain/entities/series.dart';
 import 'package:equatable/equatable.dart';
 
 class SeriesModel extends Equatable {
-  SeriesModel({
+  const SeriesModel({
     required this.backdropPath,
     required this.genreIds,
     required this.id,
@@ -58,17 +58,17 @@ class SeriesModel extends Equatable {
 
   Series toEntity() {
     return Series(
-      backdropPath: this.backdropPath,
-      genreIds: this.genreIds,
-      id: this.id,
-      originalName: this.originalName,
-      overview: this.overview,
-      popularity: this.popularity,
-      posterPath: this.posterPath,
-      releaseDate: this.releaseDate,
-      name: this.name,
-      voteAverage: this.voteAverage,
-      voteCount: this.voteCount,
+      backdropPath: backdropPath,
+      genreIds: genreIds,
+      id: id,
+      originalName: originalName,
+      overview: overview,
+      popularity: popularity,
+      posterPath: posterPath,
+      releaseDate: releaseDate,
+      name: name,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
     );
   }
 
