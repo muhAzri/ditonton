@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class PopularSeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/popular-series';
 
-  const PopularSeriesPage({Key? key}) : super(key: key);
+  const PopularSeriesPage({super.key});
 
   @override
   _PopularSeriesPageState createState() => _PopularSeriesPageState();

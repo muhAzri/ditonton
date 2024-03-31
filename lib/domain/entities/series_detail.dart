@@ -3,20 +3,19 @@ import 'package:ditonton/domain/entities/season.dart';
 import 'package:equatable/equatable.dart';
 
 class SeriesDetail extends Equatable {
-  const SeriesDetail({
-    required this.adult,
-    required this.backdropPath,
-    required this.genres,
-    required this.id,
-    required this.originalName,
-    required this.overview,
-    required this.posterPath,
-    required this.firstAirDate,
-    required this.name,
-    required this.voteAverage,
-    required this.voteCount,
-    required this.seasons
-  });
+  const SeriesDetail(
+      {required this.adult,
+      required this.backdropPath,
+      required this.genres,
+      required this.id,
+      required this.originalName,
+      required this.overview,
+      required this.posterPath,
+      required this.firstAirDate,
+      required this.name,
+      required this.voteAverage,
+      required this.voteCount,
+      required this.seasons});
 
   final bool adult;
   final String? backdropPath;

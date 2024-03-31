@@ -66,7 +66,7 @@ void main() {
   );
   final tSeriesList = <Series>[tSeries];
 
-  void _arrangeUsecase() {
+  void arrangeUsecase() {
     when(mockSeriesDetail.execute(tId))
         .thenAnswer((_) async => const Right(testSeriesDetail));
     when(mockGetSeriesRecommendations.execute(tId))
@@ -76,7 +76,7 @@ void main() {
   group('Get Series Detail', () {
     test('should get data from the usecase', () async {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       await provider.fetchSeriesDetail(tId);
       // assert
@@ -86,7 +86,7 @@ void main() {
 
     test('should change state to Loading when usecase is called', () {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       provider.fetchSeriesDetail(tId);
       // assert
@@ -96,7 +96,7 @@ void main() {
 
     test('should change movie when data is gotten successfully', () async {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       await provider.fetchSeriesDetail(tId);
       // assert
@@ -108,7 +108,7 @@ void main() {
     test('should change recommendation movies when data is gotten successfully',
         () async {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       await provider.fetchSeriesDetail(tId);
       // assert
@@ -120,7 +120,7 @@ void main() {
   group('Get Series Recommendations', () {
     test('should get data from the usecase', () async {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       await provider.fetchSeriesDetail(tId);
       // assert
@@ -131,7 +131,7 @@ void main() {
     test('should update recommendation state when data is gotten successfully',
         () async {
       // arrange
-      _arrangeUsecase();
+      arrangeUsecase();
       // act
       await provider.fetchSeriesDetail(tId);
       // assert

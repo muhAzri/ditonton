@@ -14,7 +14,7 @@ class SeriesDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/detail-series';
 
   final int id;
-  const SeriesDetailPage({Key? key, required this.id}) : super(key: key);
+  const SeriesDetailPage({super.key, required this.id});
 
   @override
   _SeriesDetailPageState createState() => _SeriesDetailPageState();
@@ -65,8 +65,7 @@ class DetailContent extends StatelessWidget {
   final bool isAddedWatchlist;
 
   const DetailContent(this.serie, this.recommendations, this.isAddedWatchlist,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   @override
   Widget build(BuildContext context) {

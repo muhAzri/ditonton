@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeSeriesPage extends StatefulWidget {
-  const HomeSeriesPage({Key? key}) : super(key: key);
+  const HomeSeriesPage({super.key});
 
   @override
   _HomeSeriesPageState createState() => _HomeSeriesPageState();
@@ -173,7 +173,7 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
 class SeriesList extends StatelessWidget {
   final List<Series> movies;
 
-  const SeriesList(this.movies, {Key? key}) : super(key: key);
+  const SeriesList(this.movies, {super.key});
 
   @override
   Widget build(BuildContext context) {

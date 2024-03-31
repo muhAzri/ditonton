@@ -13,7 +13,7 @@ class MovieDetailPage extends StatefulWidget {
   static const ROUTE_NAME = '/detail';
 
   final int id;
-  const MovieDetailPage({Key? key, required this.id}) : super(key: key);
+  const MovieDetailPage({super.key, required this.id});
 
   @override
   _MovieDetailPageState createState() => _MovieDetailPageState();
@@ -63,7 +63,8 @@ class DetailContent extends StatelessWidget {
   final List<Movie> recommendations;
   final bool isAddedWatchlist;
 
-  const DetailContent(this.movie, this.recommendations, this.isAddedWatchlist, {Key? key}) : super(key: key);
+  const DetailContent(this.movie, this.recommendations, this.isAddedWatchlist,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +215,8 @@ class DetailContent extends StatelessWidget {
                                               );
                                             },
                                             child: ClipRRect(
-                                              borderRadius: const BorderRadius.all(
+                                              borderRadius:
+                                                  const BorderRadius.all(
                                                 Radius.circular(8),
                                               ),
                                               child: CachedNetworkImage(

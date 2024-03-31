@@ -7,7 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class SeasonCard extends StatelessWidget {
   final Season season;
 
-  const SeasonCard({Key? key, required this.season}) : super(key: key);
+  const SeasonCard({super.key, required this.season});
 
   @override
   Widget build(BuildContext context) {

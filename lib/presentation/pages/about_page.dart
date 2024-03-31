@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AboutPage extends StatelessWidget {
   static const ROUTE_NAME = '/about';
 
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {

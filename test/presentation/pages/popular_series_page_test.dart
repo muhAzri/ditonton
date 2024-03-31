@@ -18,7 +18,7 @@ void main() {
     mockNotifier = MockPopularSeriesNotifier();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return ChangeNotifierProvider<PopularSeriesNotifier>.value(
       value: mockNotifier,
       child: MaterialApp(
@@ -34,7 +34,7 @@ void main() {
     final progressBarFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(_makeTestableWidget(const PopularSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const PopularSeriesPage()));
 
     expect(centerFinder, findsOneWidget);
     expect(progressBarFinder, findsOneWidget);
@@ -47,7 +47,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const PopularSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const PopularSeriesPage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -59,7 +59,7 @@ void main() {
 
     final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const PopularSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const PopularSeriesPage()));
 
     expect(textFinder, findsOneWidget);
   });

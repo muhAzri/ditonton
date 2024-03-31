@@ -35,7 +35,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +95,17 @@ class MyApp extends StatelessWidget {
             case '/home-series':
               return MaterialPageRoute(builder: (_) => const HomeSeriesPage());
             case PopularMoviesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => const PopularMoviesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => const PopularMoviesPage());
             case PopularSeriesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => const PopularSeriesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => const PopularSeriesPage());
             case TopRatedMoviesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => const TopRatedMoviesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => const TopRatedMoviesPage());
             case TopRatedSeriesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => const TopRatedSeriesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => const TopRatedSeriesPage());
             case MovieDetailPage.ROUTE_NAME:
               final id = settings.arguments as int;
               return MaterialPageRoute(
@@ -117,7 +121,8 @@ class MyApp extends StatelessWidget {
             case SearchPage.ROUTE_NAME:
               return CupertinoPageRoute(builder: (_) => const SearchPage());
             case SearchSeriesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => const SearchSeriesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => const SearchSeriesPage());
             case WatchlistPage.ROUTE_NAME:
               return MaterialPageRoute(builder: (_) => const WatchlistPage());
             case AboutPage.ROUTE_NAME:

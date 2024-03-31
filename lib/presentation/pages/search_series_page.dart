@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class SearchSeriesPage extends StatelessWidget {
   static const ROUTE_NAME = '/search-series';
 
-  const SearchSeriesPage({Key? key}) : super(key: key);
+  const SearchSeriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class WatchlistPage extends StatefulWidget {
   static const ROUTE_NAME = '/watchlist';
 
-  const WatchlistPage({Key? key}) : super(key: key);
+  const WatchlistPage({super.key});
 
   @override
   _WatchlistPageState createState() => _WatchlistPageState();
@@ -76,7 +76,7 @@ class _WatchlistPageState extends State<WatchlistPage>
 }
 
 class MovieContent extends StatelessWidget {
-  const MovieContent({Key? key}) : super(key: key);
+  const MovieContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class MovieContent extends StatelessWidget {
 }
 
 class SeriesContent extends StatelessWidget {
-  const SeriesContent({Key? key}) : super(key: key);
+  const SeriesContent({super.key});
 
   @override
   Widget build(BuildContext context) {

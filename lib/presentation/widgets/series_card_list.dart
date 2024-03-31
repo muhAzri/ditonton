@@ -8,7 +8,7 @@ import '../pages/series_detail_page.dart';
 class SeriesCard extends StatelessWidget {
   final Series series;
 
-  const SeriesCard(this.series, {Key? key}) : super(key: key);
+  const SeriesCard(this.series, {super.key});
 
   @override
   Widget build(BuildContext context) {
