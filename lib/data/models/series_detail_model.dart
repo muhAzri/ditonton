@@ -1,4 +1,5 @@
 import 'package:ditonton/data/models/genre_model.dart';
+import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
 import 'package:equatable/equatable.dart';
 
@@ -21,6 +22,7 @@ class SeriesDetailModel extends Equatable {
     required this.name,
     required this.voteAverage,
     required this.voteCount,
+    required this.seasons,
   });
 
   final bool adult;
@@ -40,6 +42,7 @@ class SeriesDetailModel extends Equatable {
   final String name;
   final double voteAverage;
   final int voteCount;
+  final List<Season> seasons;
 
   factory SeriesDetailModel.fromJson(Map<String, dynamic> json) =>
       SeriesDetailModel(
@@ -47,6 +50,8 @@ class SeriesDetailModel extends Equatable {
         backdropPath: json["backdrop_path"],
         genres: List<GenreModel>.from(
             json["genres"].map((x) => GenreModel.fromJson(x))),
+        seasons:
+            List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
         imdbId: json["imdb_id"],
@@ -67,6 +72,7 @@ class SeriesDetailModel extends Equatable {
         "adult": adult,
         "backdrop_path": backdropPath,
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
+        "seasons": List<dynamic>.from(seasons.map((x) => x.toJson())),
         "homepage": homepage,
         "id": id,
         "imdb_id": imdbId,

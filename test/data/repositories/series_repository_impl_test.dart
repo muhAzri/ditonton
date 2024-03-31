@@ -98,8 +98,10 @@ void main() {
       final result = await repository.getOnAirSeries();
       // assert
       verify(mockRemoteDataSource.getOnAirSeries());
-      expect(result,
-          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(
+          result,
+          equals(const Left(
+              ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -138,8 +140,8 @@ void main() {
       // act
       final result = await repository.getPopularSeries();
       // assert
-      expect(
-          result, const Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result,
+          const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
@@ -177,8 +179,8 @@ void main() {
       // act
       final result = await repository.getTopRatedSeries();
       // assert
-      expect(
-          result, const Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result,
+          const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
@@ -188,6 +190,7 @@ void main() {
       adult: false,
       backdropPath: 'backdropPath',
       genres: [GenreModel(id: 1, name: 'Action')],
+      seasons: [],
       homepage: "https://google.com",
       id: 1,
       imdbId: 'imdb1',
@@ -240,8 +243,10 @@ void main() {
       final result = await repository.getSeriesDetail(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesDetail(tId));
-      expect(result,
-          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(
+          result,
+          equals(const Left(
+              ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -286,8 +291,10 @@ void main() {
       final result = await repository.getSeriesRecommendations(tId);
       // assert
       verify(mockRemoteDataSource.getSeriesRecommendations(tId));
-      expect(result,
-          equals(const Left(ConnectionFailure('Failed to connect to the network'))));
+      expect(
+          result,
+          equals(const Left(
+              ConnectionFailure('Failed to connect to the network'))));
     });
   });
 
@@ -327,8 +334,8 @@ void main() {
       // act
       final result = await repository.searchSeries(tQuery);
       // assert
-      expect(
-          result, const Left(ConnectionFailure('Failed to connect to the network')));
+      expect(result,
+          const Left(ConnectionFailure('Failed to connect to the network')));
     });
   });
 
