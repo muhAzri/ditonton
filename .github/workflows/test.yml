@@ -1,0 +1,33 @@
+name: Melos Flutter Test Workflow
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  melos_flutter_tests:
+    name: Run Melos Flutter Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: |
+          flutter pub get
+    
+      - name: Run tests
+        run: |
+          flutter test --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4-beta
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
