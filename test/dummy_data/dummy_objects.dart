@@ -86,6 +86,7 @@ const testSeriesDetail = SeriesDetail(
   adult: false,
   backdropPath: 'backdropPath',
   genres: [Genre(id: 1, name: 'Action')],
+  seasons: [],
   id: 1,
   originalName: 'originalName',
   overview: 'overview',

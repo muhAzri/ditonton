@@ -18,7 +18,7 @@ void main() {
           onGenerateRoute: (settings) {
             if (settings.name == '/') {
               return MaterialPageRoute(
-                builder: (_) => Scaffold(
+                builder: (_) => const Scaffold(
                   body: SeriesCard(series),
                 ),
               );

@@ -42,7 +42,7 @@ class SeriesDetailModel extends Equatable {
   final String name;
   final double voteAverage;
   final int voteCount;
-  final List<Season> seasons;
+  final List<SeasonModel> seasons;
 
   factory SeriesDetailModel.fromJson(Map<String, dynamic> json) =>
       SeriesDetailModel(
@@ -50,8 +50,8 @@ class SeriesDetailModel extends Equatable {
         backdropPath: json["backdrop_path"],
         genres: List<GenreModel>.from(
             json["genres"].map((x) => GenreModel.fromJson(x))),
-        seasons:
-            List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
+        seasons: List<SeasonModel>.from(
+            json["seasons"].map((x) => SeasonModel.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
         imdbId: json["imdb_id"],
@@ -94,6 +94,7 @@ class SeriesDetailModel extends Equatable {
       adult: adult,
       backdropPath: backdropPath,
       genres: genres.map((genre) => genre.toEntity()).toList(),
+      seasons: seasons.map((season) => season.toEntity()).toList(),
       id: id,
       originalName: originalName,
       overview: overview,

@@ -21,8 +21,8 @@ void main() {
     voteAverage: 5,
     voteCount: 13,
   );
-  final tSeriesResponseModel =
-      const SeriesResponse(seriesList: <SeriesModel>[tSeriesModel]);
+  const tSeriesResponseModel =
+      SeriesResponse(seriesList: <SeriesModel>[tSeriesModel]);
   group('fromJson', () {
     test('should return a valid model from JSON', () async {
       // arrange
