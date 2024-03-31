@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/presentation/pages/series_detail_page.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:provider/provider.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -105,4 +107,42 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
   });
+
+  testWidgets(
+    "Render Recommendation Series Horizontal List when Success",
+    (widgetTester) async {
+      final List<Series> series = testSeriesList;
+
+      await mockNetworkImages(
+        () async => await widgetTester.pumpWidget(
+          makeTestableWidget(
+            Material(child: RecommendationSeries(recommendations: series)),
+          ),
+        ),
+      );
+
+      expect(find.byType(ListView), findsOneWidget);
+      expect(find.byType(CachedNetworkImage), findsNWidgets(series.length));
+    },
+  );
+
+  testWidgets(
+    "Render Series Seasons List when Success",
+    (widgetTester) async {
+      await mockNetworkImages(
+        () async => await widgetTester.pumpWidget(
+          makeTestableWidget(
+            const Material(
+                child: SeriesSeasons(
+              serie: testSeriesDetail,
+            )),
+          ),
+        ),
+      );
+
+      expect(find.byType(ListView), findsOneWidget);
+      expect(find.byType(CachedNetworkImage),
+          findsNWidgets(testSeriesDetail.seasons.length));
+    },
+  );
 }

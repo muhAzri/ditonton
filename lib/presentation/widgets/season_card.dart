@@ -17,17 +17,13 @@ class SeasonCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // Image
-          // Image
           SizedBox(
             width: 100,
-            height: 150, // Adjust height accordingly
+            height: 150,
             child: CachedNetworkImage(
               imageUrl: "$BASE_IMAGE_URL${season.posterPath}",
               fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  const CircularProgressIndicator(), // Placeholder widget
-              errorWidget: (context, url, error) =>
-                  const Icon(Icons.error), // Error widget
+              placeholder: (context, url) => const CircularProgressIndicator(),
             ),
           ),
 

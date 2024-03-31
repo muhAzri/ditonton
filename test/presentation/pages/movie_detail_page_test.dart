@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:provider/provider.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -105,4 +107,23 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
   });
+
+  testWidgets(
+    "Render Recommendation Movie Horizontal List when Success",
+    (widgetTester) async {
+      final List<Movie> movies = testMovieList;
+
+      await mockNetworkImages(
+        () async => await widgetTester.pumpWidget(
+          makeTestableWidget(
+            Material(child: MovieRecommendation(recommendations: movies)),
+          ),
+        ),
+      );
+
+      expect(find.byType(ListView), findsOneWidget);
+      expect(
+          find.byType(CachedNetworkImage), findsNWidgets(testMovieList.length));
+    },
+  );
 }

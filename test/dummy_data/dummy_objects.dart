@@ -3,6 +3,7 @@ import 'package:ditonton/data/models/series_table.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
+import 'package:ditonton/domain/entities/season.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
 
@@ -86,7 +87,18 @@ const testSeriesDetail = SeriesDetail(
   adult: false,
   backdropPath: 'backdropPath',
   genres: [Genre(id: 1, name: 'Action')],
-  seasons: [],
+  seasons: [
+    Season(
+      airDate: "2010-12-05",
+      episodeCount: 272,
+      id: 3627,
+      name: "Specials",
+      overview: "",
+      posterPath: "/kMTcwNRfFKCZ0O2OaBZS0nZ2AIe.jpg",
+      seasonNumber: 0,
+      voteAverage: 0,
+    )
+  ],
   id: 1,
   originalName: 'originalName',
   overview: 'overview',
