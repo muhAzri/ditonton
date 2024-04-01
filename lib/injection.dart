@@ -27,21 +27,22 @@ import 'package:ditonton/domain/usecases/save_series_watchlist.dart';
 import 'package:ditonton/domain/usecases/save_watchlist.dart';
 import 'package:ditonton/domain/usecases/search_movies.dart';
 import 'package:ditonton/domain/usecases/search_series.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_series_notifier.dart';
-import 'package:ditonton/presentation/provider/series_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/series_list_notifier.dart';
-import 'package:ditonton/presentation/provider/series_search_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_series_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
+import 'package:ditonton/presentation/provider/series/on_air_series_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/series/popular_series_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_list_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_search_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/provider/series/watchlist_series_notifier.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 
-import 'presentation/provider/top_rated_series_notifier.dart';
+import 'presentation/provider/series/top_rated_series_notifier.dart';
 
 final locator = GetIt.instance;
 
@@ -122,6 +123,12 @@ Future<void> init() async {
   locator.registerFactory(
     () => SeriesSearchNotifier(
       searchSeries: locator(),
+    ),
+  );
+
+  locator.registerFactory(
+    () => OnAirSeriesNotifier(
+      getOnAirSeries: locator(),
     ),
   );
 

@@ -3,7 +3,7 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/series_detail_page.dart';
+import '../pages/series/series_detail_page.dart';
 
 class SeriesCard extends StatelessWidget {
   final Series series;

@@ -1,29 +1,31 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
-import 'package:ditonton/presentation/pages/home_series_page.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/presentation/pages/home_movie_page.dart';
-import 'package:ditonton/presentation/pages/popular_movies_page.dart';
-import 'package:ditonton/presentation/pages/popular_series_page.dart';
-import 'package:ditonton/presentation/pages/search_page.dart';
-import 'package:ditonton/presentation/pages/search_series_page.dart';
-import 'package:ditonton/presentation/pages/series_detail_page.dart';
-import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
-import 'package:ditonton/presentation/pages/top_rated_series_page.dart';
+import 'package:ditonton/presentation/pages/series/home_series_page.dart';
+import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
+import 'package:ditonton/presentation/pages/movies/home_movie_page.dart';
+import 'package:ditonton/presentation/pages/series/on_air_series_page.dart';
+import 'package:ditonton/presentation/pages/movies/popular_movies_page.dart';
+import 'package:ditonton/presentation/pages/series/popular_series_page.dart';
+import 'package:ditonton/presentation/pages/movies/search_page.dart';
+import 'package:ditonton/presentation/pages/series/search_series_page.dart';
+import 'package:ditonton/presentation/pages/series/series_detail_page.dart';
+import 'package:ditonton/presentation/pages/movies/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/series/top_rated_series_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_page.dart';
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
-import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/popular_series_notifier.dart';
-import 'package:ditonton/presentation/provider/series_detail_notifier.dart';
-import 'package:ditonton/presentation/provider/series_list_notifier.dart';
-import 'package:ditonton/presentation/provider/series_search_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:ditonton/presentation/provider/top_rated_series_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_series_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_list_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/movie_search_notifier.dart';
+import 'package:ditonton/presentation/provider/series/on_air_series_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/series/popular_series_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_detail_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_list_notifier.dart';
+import 'package:ditonton/presentation/provider/series/series_search_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/series/top_rated_series_notifier.dart';
+import 'package:ditonton/presentation/provider/movies/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/provider/series/watchlist_series_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +81,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<SeriesSearchNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<OnAirSeriesNotifier>(),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -108,6 +113,9 @@ class MyApp extends StatelessWidget {
             case TopRatedSeriesPage.ROUTE_NAME:
               return CupertinoPageRoute(
                   builder: (_) => const TopRatedSeriesPage());
+            case OnAirSeriesPage.ROUTE_NAME:
+              return CupertinoPageRoute(
+                  builder: (_) => const OnAirSeriesPage());
             case MovieDetailPage.ROUTE_NAME:
               final id = settings.arguments as int;
               return MaterialPageRoute(
