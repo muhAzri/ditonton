@@ -1,11 +1,13 @@
 import 'package:core/common/state_enum.dart';
 import 'package:core/common/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:movie/presentation/provider/watchlist_movie_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/bloc/watchlist_movie/watchlist_movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
 import 'package:provider/provider.dart';
 import 'package:series/presentation/provider/watchlist_series_notifier.dart';
 import 'package:series/presentation/widgets/series_card_list.dart';
+import 'package:core/injector.dart' as di;
 
 class WatchlistPage extends StatefulWidget {
   static const routeName = '/watchlist';
@@ -17,19 +19,67 @@ class WatchlistPage extends StatefulWidget {
 }
 
 class WatchlistPageState extends State<WatchlistPage>
-    with RouteAware, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    Future.microtask(() {
-      Provider.of<WatchlistMovieNotifier>(context, listen: false)
-          .fetchWatchlistMovies();
-      Provider.of<WatchlistSeriesNotifier>(context, listen: false)
-          .fetchWatchlistSeries();
-    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => di.locator<WatchlistMovieBloc>(),
+        ),
+        // BlocProvider(
+        //   create: (context) => SubjectBloc(),
+        // ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Watchlist'),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Movies'),
+              Tab(text: 'Series'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: const [
+            MovieContent(),
+            SeriesContent(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+}
+
+class MovieContent extends StatefulWidget {
+  const MovieContent({super.key});
+
+  @override
+  State<MovieContent> createState() => _MovieContentState();
+}
+
+class _MovieContentState extends State<MovieContent> with RouteAware {
+  @override
+  void initState() {
+    super.initState();
+    context.read<WatchlistMovieBloc>().add(FetchWatchlistMovieEvents());
   }
 
   @override
@@ -40,86 +90,52 @@ class WatchlistPageState extends State<WatchlistPage>
 
   @override
   void didPopNext() {
-    Provider.of<WatchlistMovieNotifier>(context, listen: false)
-        .fetchWatchlistMovies();
-    Provider.of<WatchlistSeriesNotifier>(context, listen: false)
-        .fetchWatchlistSeries();
+    // Provider.of<WatchlistSeriesNotifier>(context, listen: false)
+    //     .fetchWatchlistSeries();
+    context.read<WatchlistMovieBloc>().add(FetchWatchlistMovieEvents());
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Watchlist'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Movies'),
-            Tab(text: 'Series'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          MovieContent(),
-          SeriesContent(),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    routeObserver.unsubscribe(this);
-    _tabController.dispose();
-    super.dispose();
-  }
-}
-
-class MovieContent extends StatelessWidget {
-  const MovieContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Consumer<WatchlistMovieNotifier>(
-        builder: (context, data, child) {
-          if (data.watchlistState == RequestState.loading) {
+        padding: const EdgeInsets.all(8.0),
+        child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
+          builder: (context, state) {
+            if (state is WatchlistMovieFailed) {
+              return Center(
+                key: const Key('error_message'),
+                child: Text(state.error),
+              );
+            }
+
+            if (state is WatchlistMovieLoaded) {
+              if (state.movies.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.movie_creation, size: 50),
+                      SizedBox(height: 8),
+                      Text('No movies in your watchlist.'),
+                    ],
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final movie = state.movies[index];
+                    return MovieCard(movie);
+                  },
+                  itemCount: state.movies.length,
+                );
+              }
+            }
+
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (data.watchlistState == RequestState.loaded) {
-            if (data.watchlistMovies.isEmpty) {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.movie_creation, size: 50),
-                    SizedBox(height: 8),
-                    Text('No movies in your watchlist.'),
-                  ],
-                ),
-              );
-            } else {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final movie = data.watchlistMovies[index];
-                  return MovieCard(movie);
-                },
-                itemCount: data.watchlistMovies.length,
-              );
-            }
-          } else {
-            return Center(
-              key: const Key('error_message'),
-              child: Text(data.message),
-            );
-          }
-        },
-      ),
-    );
+          },
+        ));
   }
 }
 

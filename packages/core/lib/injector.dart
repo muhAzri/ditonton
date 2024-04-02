@@ -1,10 +1,15 @@
 import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
+import 'package:movie/bloc/home_movie/home_movie_bloc.dart';
+import 'package:movie/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:movie/bloc/popular_movie/popular_movie_bloc.dart';
+import 'package:movie/bloc/search_movie/search_movie_bloc.dart';
+import 'package:movie/bloc/top_rated_movie/top_rated_movie_bloc.dart';
+import 'package:movie/bloc/watchlist_movie/watchlist_movie_bloc.dart';
 import 'package:movie/data/datasources/datasources.dart';
 import 'package:movie/domain/repositories/repositories.dart';
 import 'package:movie/domain/usecases/usecases.dart';
-import 'package:movie/presentation/provider/provider.dart';
 import 'package:series/data/datasources/datasources.dart';
 import 'package:series/domain/repositories/repositories.dart';
 import 'package:series/domain/usecases/usecases.dart';
@@ -17,16 +22,17 @@ Future<void> init() async {
   // helper
   locator.registerFactory(() => DatabaseHelper(database: database));
 
-  // provider
+  //BLOC
   locator.registerFactory(
-    () => MovieListNotifier(
+    () => HomeMovieBloc(
       getNowPlayingMovies: locator(),
       getPopularMovies: locator(),
       getTopRatedMovies: locator(),
     ),
   );
+
   locator.registerFactory(
-    () => MovieDetailNotifier(
+    () => MovieDetailBloc(
       getMovieDetail: locator(),
       getMovieRecommendations: locator(),
       getWatchListStatus: locator(),
@@ -34,26 +40,32 @@ Future<void> init() async {
       removeWatchlist: locator(),
     ),
   );
+
   locator.registerFactory(
-    () => MovieSearchNotifier(
+    () => PopularMovieBloc(
+      getPopularMovies: locator(),
+    ),
+  );
+
+  locator.registerFactory(
+    () => SearchMovieBloc(
       searchMovies: locator(),
     ),
   );
+
   locator.registerFactory(
-    () => PopularMoviesNotifier(
-      locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => TopRatedMoviesNotifier(
+    () => TopRatedMovieBloc(
       getTopRatedMovies: locator(),
     ),
   );
+
   locator.registerFactory(
-    () => WatchlistMovieNotifier(
+    () => WatchlistMovieBloc(
       getWatchlistMovies: locator(),
     ),
   );
+
+  // provider
 
   locator.registerFactory(
     () => SeriesListNotifier(
