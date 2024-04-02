@@ -21,7 +21,7 @@ class SeasonCard extends StatelessWidget {
             width: 100,
             height: 150,
             child: CachedNetworkImage(
-              imageUrl: "$BASE_IMAGE_URL${season.posterPath}",
+              imageUrl: "$baseImageUrl${season.posterPath}",
               fit: BoxFit.cover,
               placeholder: (context, url) => const CircularProgressIndicator(),
             ),

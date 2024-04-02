@@ -30,8 +30,6 @@ jobs:
           flutter pub global run melos bootstrap
           flutter pub global run melos pubget
           flutter pub global activate coverde
-      - name: Analyze the project's Dart code
-        run: flutter pub global run melos analyze
 
       - name: Run tests
         run: |

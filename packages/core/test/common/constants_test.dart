@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   test('Constants have correct values', () {
-    expect(BASE_IMAGE_URL, equals('https://image.tmdb.org/t/p/w500'));
+    expect(baseImageUrl, equals('https://image.tmdb.org/t/p/w500'));
     expect(kRichBlack, equals(const Color(0xFF000814)));
     expect(kOxfordBlue, equals(const Color(0xFF001D3D)));
     expect(kPrussianBlue, equals(const Color(0xFF003566)));
