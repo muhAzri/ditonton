@@ -1,0 +1,28 @@
+name: CodeWithAzri
+
+packages:
+  - packages/*
+
+scripts:
+  analyze:
+    run: melos exec -- flutter analyze .
+    description: Run `dart analyze` in all packages.  
+  clean:
+   run: melos exec -- flutter clean
+   description: Run `flutter clean` in all packages.
+  pubget:
+   run: melos exec -- flutter pub get
+   description: Run `flutter pub get` in all packages.
+  update-pub:
+   run: melos exec -- flutter pub upgrade --major-versions
+   description: Run `flutter pub upgrade` in all packages.
+  test:
+    run: |
+      melos exec --dir-exists="test" --fail-fast -- flutter test --no-pub --coverage
+    description: Run all Flutter tests in this project.
+  test-coverage:
+    description: Merge all packages coverage trace files ignoring data related to generated files.
+    run: >
+      melos test
+      coverde rm MELOS_ROOT_PATH/coverage/filtered.lcov.info &&
+      melos exec --file-exists=coverage/lcov.info -- "coverde filter --input ./coverage/lcov.info --output MELOS_ROOT_PATH/coverage/filtered.lcov.info --paths-parent MELOS_PACKAGE_PATH --filters '\.g\.dart'"

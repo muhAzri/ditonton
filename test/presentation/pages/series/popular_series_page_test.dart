@@ -1,6 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/series.dart';
-import 'package:ditonton/presentation/pages/series/popular_series_page.dart';
+import '../../../../packages/series/lib/presentation/pages/popular_series_page.dart';
 import 'package:ditonton/presentation/provider/series/popular_series_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

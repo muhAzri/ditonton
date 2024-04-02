@@ -1,0 +1,10 @@
+export 'get_on_air_series.dart';
+export 'get_popular_series.dart';
+export 'get_series_detail.dart';
+export 'get_series_recommendations.dart';
+export 'get_top_rated_series.dart';
+export 'get_watchlist_series_status.dart';
+export 'get_watchlist_series.dart';
+export 'remove_series_watchlist.dart';
+export 'save_series_watchlist.dart';
+export 'search_series.dart';

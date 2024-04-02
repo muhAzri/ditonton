@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/series.dart';
-import 'package:ditonton/presentation/pages/series/series_detail_page.dart';
+import '../../../../packages/series/lib/presentation/pages/series_detail_page.dart';
 import 'package:ditonton/presentation/provider/series/series_detail_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
