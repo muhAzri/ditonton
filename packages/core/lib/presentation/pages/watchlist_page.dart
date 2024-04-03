@@ -48,13 +48,7 @@ class WatchlistPageState extends State<WatchlistPage>
             ],
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const [
-            MovieContent(),
-            SeriesContent(),
-          ],
-        ),
+        body: WatchlistTab(tabController: _tabController),
       ),
     );
   }
@@ -66,14 +60,19 @@ class WatchlistPageState extends State<WatchlistPage>
   }
 }
 
-class MovieContent extends StatefulWidget {
-  const MovieContent({super.key});
+class WatchlistTab extends StatefulWidget {
+  const WatchlistTab({
+    super.key,
+    required TabController tabController,
+  }) : _tabController = tabController;
+
+  final TabController _tabController;
 
   @override
-  State<MovieContent> createState() => _MovieContentState();
+  State<WatchlistTab> createState() => _WatchlistTabState();
 }
 
-class _MovieContentState extends State<MovieContent> with RouteAware {
+class _WatchlistTabState extends State<WatchlistTab> with RouteAware {
   @override
   void initState() {
     super.initState();
@@ -92,6 +91,21 @@ class _MovieContentState extends State<MovieContent> with RouteAware {
     context.read<WatchlistMovieBloc>().add(FetchWatchlistMovieEvents());
     context.read<WatchlistSeriesBloc>().add(FetchWatchlistSeriesEvents());
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+      controller: widget._tabController,
+      children: const [
+        MovieContent(),
+        SeriesContent(),
+      ],
+    );
+  }
+}
+
+class MovieContent extends StatelessWidget {
+  const MovieContent({super.key});
 
   @override
   Widget build(BuildContext context) {
