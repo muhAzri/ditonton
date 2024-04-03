@@ -10,10 +10,15 @@ import 'package:movie/bloc/watchlist_movie/watchlist_movie_bloc.dart';
 import 'package:movie/data/datasources/datasources.dart';
 import 'package:movie/domain/repositories/repositories.dart';
 import 'package:movie/domain/usecases/usecases.dart';
+import 'package:series/bloc/home_series/home_series_bloc.dart';
+import 'package:series/bloc/on_air_series/on_air_series_bloc.dart';
+import 'package:series/bloc/popular_series.dart/popular_series_bloc.dart';
+import 'package:series/bloc/series_detail/series_detail_bloc.dart';
+import 'package:series/bloc/top_rated_series/top_rated_series_bloc.dart';
+import 'package:series/bloc/watchlist_series/watchlist_series_bloc.dart';
 import 'package:series/data/datasources/datasources.dart';
 import 'package:series/domain/repositories/repositories.dart';
 import 'package:series/domain/usecases/usecases.dart';
-import 'package:series/presentation/provider/provider.dart';
 
 final locator = GetIt.instance;
 
@@ -65,48 +70,45 @@ Future<void> init() async {
     ),
   );
 
-  // provider
-
   locator.registerFactory(
-    () => SeriesListNotifier(
+    () => HomeSeriesBloc(
       getOnAirSeries: locator(),
       getPopularSeries: locator(),
       getTopRatedSeries: locator(),
     ),
   );
 
-  locator.registerFactory(() => SeriesDetailNotifier(
-        getSeriesDetail: locator(),
-        getSeriesRecommendations: locator(),
-        getWatchListSeriesStatus: locator(),
-        saveSeriesWatchlist: locator(),
-        removeSeriesWatchlist: locator(),
-      ));
-
   locator.registerFactory(
-    () => PopularSeriesNotifier(
-      locator(),
+    () => SeriesDetailBloc(
+      getSeriesDetail: locator(),
+      getSeriesRecommendations: locator(),
+      getWatchListSeriesStatus: locator(),
+      saveSeriesWatchlist: locator(),
+      removeSeriesWatchlist: locator(),
     ),
   );
+
   locator.registerFactory(
-    () => TopRatedSeriesNotifier(
+    () => OnAirSeriesBloc(
+      getOnAirSeries: locator(),
+    ),
+  );
+
+  locator.registerFactory(
+    () => PopularSeriesBloc(
+      getPopularSeries: locator(),
+    ),
+  );
+
+  locator.registerFactory(
+    () => TopRatedSeriesBloc(
       getTopRatedSeries: locator(),
     ),
   );
-  locator.registerFactory(
-    () => WatchlistSeriesNotifier(
-      getWatchlistSeries: locator(),
-    ),
-  );
-  locator.registerFactory(
-    () => SeriesSearchNotifier(
-      searchSeries: locator(),
-    ),
-  );
 
   locator.registerFactory(
-    () => OnAirSeriesNotifier(
-      getOnAirSeries: locator(),
+    () => WatchlistSeriesBloc(
+      getWatchlistSeries: locator(),
     ),
   );
 

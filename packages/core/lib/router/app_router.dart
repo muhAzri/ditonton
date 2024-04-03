@@ -18,21 +18,29 @@ class AppRouter {
                   locator: di.locator,
                 );
               case '/home-series':
-                return const HomeSeriesPage();
+                return HomeSeriesPage(
+                  locator: di.locator,
+                );
               case PopularMoviesPage.routeName:
                 return PopularMoviesPage(
                   locator: di.locator,
                 );
               case PopularSeriesPage.routeName:
-                return const PopularSeriesPage();
+                return PopularSeriesPage(
+                  locator: di.locator,
+                );
               case TopRatedMoviesPage.routeName:
                 return TopRatedMoviesPage(
                   locator: di.locator,
                 );
               case TopRatedSeriesPage.routeName:
-                return const TopRatedSeriesPage();
+                return TopRatedSeriesPage(
+                  locator: di.locator,
+                );
               case OnAirSeriesPage.routeName:
-                return const OnAirSeriesPage();
+                return OnAirSeriesPage(
+                  locator: di.locator,
+                );
               case MovieDetailPage.routeName:
                 final id = settings.arguments as int;
                 return MovieDetailPage(
@@ -41,13 +49,18 @@ class AppRouter {
                 );
               case SeriesDetailPage.routeName:
                 final id = settings.arguments as int;
-                return SeriesDetailPage(id: id);
+                return SeriesDetailPage(
+                  id: id,
+                  locator: di.locator,
+                );
               case SearchPage.routeName:
                 return SearchPage(
                   locator: di.locator,
                 );
               case SearchSeriesPage.routeName:
-                return const SearchSeriesPage();
+                return  SearchSeriesPage(
+                  locator: di.locator,
+                );
               case WatchlistPage.routeName:
                 return const WatchlistPage();
               case AboutPage.routeName:

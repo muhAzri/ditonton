@@ -1,56 +1,50 @@
-import 'package:core/common/state_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:series/presentation/provider/top_rated_series_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:series/bloc/top_rated_series/top_rated_series_bloc.dart';
 import 'package:series/presentation/widgets/series_card_list.dart';
 
-class TopRatedSeriesPage extends StatefulWidget {
+class TopRatedSeriesPage extends StatelessWidget {
   static const routeName = '/top-rated-serie';
+  final GetIt locator;
 
-  const TopRatedSeriesPage({super.key});
-
-  @override
-  TopRatedSeriesPageState createState() => TopRatedSeriesPageState();
-}
-
-class TopRatedSeriesPageState extends State<TopRatedSeriesPage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() =>
-        Provider.of<TopRatedSeriesNotifier>(context, listen: false)
-            .fetchTopRatedSeries());
-  }
+  const TopRatedSeriesPage({super.key, required this.locator});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Top Rated Series'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedSeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+    return BlocProvider(
+      create: (context) =>
+          locator<TopRatedSeriesBloc>()..add(FetchTopRatedSeriesEvent()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Top Rated Series'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: BlocBuilder<TopRatedSeriesBloc, TopRatedSeriesState>(
+            builder: (context, state) {
+              if (state is TopRatedSeriesLoaded) {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final serie = state.series[index];
+                    return SeriesCard(serie);
+                  },
+                  itemCount: state.series.length,
+                );
+              }
+
+              if (state is TopRatedSeriesFailed) {
+                return Center(
+                  key: const Key('error_message'),
+                  child: Text(state.error),
+                );
+              }
+
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final serie = data.series[index];
-                  return SeriesCard(serie);
-                },
-                itemCount: data.series.length,
-              );
-            } else {
-              return Center(
-                key: const Key('error_message'),
-                child: Text(data.message),
-              );
-            }
-          },
+            },
+          ),
         ),
       ),
     );

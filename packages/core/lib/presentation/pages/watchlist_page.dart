@@ -1,13 +1,11 @@
-import 'package:core/common/state_enum.dart';
 import 'package:core/common/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/bloc/watchlist_movie/watchlist_movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
-import 'package:provider/provider.dart';
-import 'package:series/presentation/provider/watchlist_series_notifier.dart';
-import 'package:series/presentation/widgets/series_card_list.dart';
+import 'package:series/bloc/watchlist_series/watchlist_series_bloc.dart';
 import 'package:core/injector.dart' as di;
+import 'package:series/presentation/widgets/series_card_list.dart';
 
 class WatchlistPage extends StatefulWidget {
   static const routeName = '/watchlist';
@@ -35,9 +33,9 @@ class WatchlistPageState extends State<WatchlistPage>
         BlocProvider(
           create: (context) => di.locator<WatchlistMovieBloc>(),
         ),
-        // BlocProvider(
-        //   create: (context) => SubjectBloc(),
-        // ),
+        BlocProvider(
+          create: (context) => di.locator<WatchlistSeriesBloc>(),
+        ),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -80,6 +78,7 @@ class _MovieContentState extends State<MovieContent> with RouteAware {
   void initState() {
     super.initState();
     context.read<WatchlistMovieBloc>().add(FetchWatchlistMovieEvents());
+    context.read<WatchlistSeriesBloc>().add(FetchWatchlistSeriesEvents());
   }
 
   @override
@@ -90,52 +89,52 @@ class _MovieContentState extends State<MovieContent> with RouteAware {
 
   @override
   void didPopNext() {
-    // Provider.of<WatchlistSeriesNotifier>(context, listen: false)
-    //     .fetchWatchlistSeries();
     context.read<WatchlistMovieBloc>().add(FetchWatchlistMovieEvents());
+    context.read<WatchlistSeriesBloc>().add(FetchWatchlistSeriesEvents());
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
-          builder: (context, state) {
-            if (state is WatchlistMovieFailed) {
-              return Center(
-                key: const Key('error_message'),
-                child: Text(state.error),
+      padding: const EdgeInsets.all(8.0),
+      child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
+        builder: (context, state) {
+          if (state is WatchlistMovieFailed) {
+            return Center(
+              key: const Key('error_message'),
+              child: Text(state.error),
+            );
+          }
+
+          if (state is WatchlistMovieLoaded) {
+            if (state.movies.isEmpty) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.movie_creation, size: 50),
+                    SizedBox(height: 8),
+                    Text('No movies in your watchlist.'),
+                  ],
+                ),
+              );
+            } else {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  final movie = state.movies[index];
+                  return MovieCard(movie);
+                },
+                itemCount: state.movies.length,
               );
             }
+          }
 
-            if (state is WatchlistMovieLoaded) {
-              if (state.movies.isEmpty) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.movie_creation, size: 50),
-                      SizedBox(height: 8),
-                      Text('No movies in your watchlist.'),
-                    ],
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    final movie = state.movies[index];
-                    return MovieCard(movie);
-                  },
-                  itemCount: state.movies.length,
-                );
-              }
-            }
-
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ));
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -146,14 +145,17 @@ class SeriesContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Consumer<WatchlistSeriesNotifier>(
-        builder: (context, data, child) {
-          if (data.watchlistState == RequestState.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<WatchlistSeriesBloc, WatchlistSeriesState>(
+        builder: (context, state) {
+          if (state is WatchlistSeriesFailed) {
+            return Center(
+              key: const Key('error_message'),
+              child: Text(state.error),
             );
-          } else if (data.watchlistState == RequestState.loaded) {
-            if (data.watchlistSeries.isEmpty) {
+          }
+
+          if (state is WatchlistSeriesLoaded) {
+            if (state.series.isEmpty) {
               return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -167,18 +169,17 @@ class SeriesContent extends StatelessWidget {
             } else {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final serie = data.watchlistSeries[index];
+                  final serie = state.series[index];
                   return SeriesCard(serie);
                 },
-                itemCount: data.watchlistSeries.length,
+                itemCount: state.series.length,
               );
             }
-          } else {
-            return Center(
-              key: const Key('error_message'),
-              child: Text(data.message),
-            );
           }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

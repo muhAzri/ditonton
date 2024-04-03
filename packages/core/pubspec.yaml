@@ -18,7 +18,6 @@ dependencies:
   http: ^1.2.1
   movie:
     path: ../movie
-  provider: ^6.1.2
   series:
     path: ../series
   sqflite: ^2.3.2

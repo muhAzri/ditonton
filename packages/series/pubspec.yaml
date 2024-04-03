@@ -16,7 +16,9 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.5
   flutter_rating_bar: ^4.0.1
+  get_it: ^7.6.8
   http: ^1.2.1
   provider: ^6.1.2
 
@@ -26,6 +28,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
+  mocktail: ^1.0.3
   mocktail_image_network: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
