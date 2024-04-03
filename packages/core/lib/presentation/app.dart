@@ -3,7 +3,6 @@ import 'package:core/common/utils.dart';
 import 'package:core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/presentation/pages/home_movie_page.dart';
-import 'package:movie/presentation/provider/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:series/presentation/provider/provider.dart';
 import 'package:core/injector.dart' as di;
@@ -15,24 +14,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistMovieNotifier>(),
-        ),
         ChangeNotifierProvider(
           create: (_) => di.locator<SeriesListNotifier>(),
         ),
@@ -56,14 +37,15 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
           colorScheme: kColorScheme,
           primaryColor: kRichBlack,
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: const HomeMoviePage(),
+        home: HomeMoviePage(
+          locator: di.locator,
+        ),
         navigatorObservers: [routeObserver],
         onGenerateRoute: AppRouter.onGenerateRoute,
       ),

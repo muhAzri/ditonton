@@ -3,6 +3,7 @@ import 'package:core/presentation/pages/watchlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/presentation/pages/pages.dart';
 import 'package:series/presentation/pages/pages.dart';
+import 'package:core/injector.dart' as di;
 
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings settings) {
@@ -13,27 +14,38 @@ class AppRouter {
           builder: (BuildContext context) {
             switch (settings.name) {
               case '/home':
-                return const HomeMoviePage();
+                return HomeMoviePage(
+                  locator: di.locator,
+                );
               case '/home-series':
                 return const HomeSeriesPage();
               case PopularMoviesPage.routeName:
-                return const PopularMoviesPage();
+                return PopularMoviesPage(
+                  locator: di.locator,
+                );
               case PopularSeriesPage.routeName:
                 return const PopularSeriesPage();
               case TopRatedMoviesPage.routeName:
-                return const TopRatedMoviesPage();
+                return TopRatedMoviesPage(
+                  locator: di.locator,
+                );
               case TopRatedSeriesPage.routeName:
                 return const TopRatedSeriesPage();
               case OnAirSeriesPage.routeName:
                 return const OnAirSeriesPage();
               case MovieDetailPage.routeName:
                 final id = settings.arguments as int;
-                return MovieDetailPage(id: id);
+                return MovieDetailPage(
+                  id: id,
+                  locator: di.locator,
+                );
               case SeriesDetailPage.routeName:
                 final id = settings.arguments as int;
                 return SeriesDetailPage(id: id);
               case SearchPage.routeName:
-                return const SearchPage();
+                return SearchPage(
+                  locator: di.locator,
+                );
               case SearchSeriesPage.routeName:
                 return const SearchSeriesPage();
               case WatchlistPage.routeName:

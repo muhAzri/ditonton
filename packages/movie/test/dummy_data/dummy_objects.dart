@@ -37,6 +37,21 @@ const testMovieDetail = MovieDetail(
   voteCount: 1,
 );
 
+const testMovieDetail2 = MovieDetail(
+  adult: false,
+  backdropPath: 'backdropPath',
+  genres: [Genre(id: 1, name: 'Action')],
+  id: 1,
+  originalTitle: 'originalTitle2',
+  overview: 'overview2',
+  posterPath: 'posterPath',
+  releaseDate: 'releaseDate',
+  runtime: 120,
+  title: 'title2',
+  voteAverage: 1,
+  voteCount: 1,
+);
+
 const testWatchlistMovie = Movie.watchlist(
   id: 1,
   title: 'title',
