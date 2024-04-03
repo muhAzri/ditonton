@@ -1,27 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/common/constants.dart';
 import 'package:core/domain/entities/genre.dart';
+import 'package:core/injector.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie/domain/entities/movie.dart';
 import 'package:movie/domain/entities/movie_detail.dart';
-import 'package:core/injector.dart' as di;
 
 class MovieDetailPage extends StatelessWidget {
   static const routeName = '/detail';
 
   final int id;
+  final GetIt locator;
 
-  const MovieDetailPage({super.key, required this.id});
+  const MovieDetailPage({super.key, required this.id, required this.locator});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (_) => di.locator<MovieDetailBloc>()
+        create: (_) => locator<MovieDetailBloc>()
           ..add(
             FetchMovieDetailEvent(tID: id),
           ),
@@ -37,8 +39,11 @@ class MovieDetailPage extends StatelessWidget {
               final movie = state.movieDetail;
               return SafeArea(
                 child: BlocProvider(
-                  create: (context) => di.locator<MovieDetailBloc>(),
-                  child: DetailContent(movie),
+                  create: (context) => locator<MovieDetailBloc>(),
+                  child: DetailContent(
+                    movie,
+                    locator: locator,
+                  ),
                 ),
               );
             }
@@ -55,8 +60,9 @@ class MovieDetailPage extends StatelessWidget {
 
 class DetailContent extends StatefulWidget {
   final MovieDetail movie;
+  final GetIt locator;
 
-  const DetailContent(this.movie, {super.key});
+  const DetailContent(this.movie, {super.key, required this.locator});
 
   @override
   State<DetailContent> createState() => _DetailContentState();
@@ -201,32 +207,10 @@ class _DetailContentState extends State<DetailContent> {
                                 'Recommendations',
                                 style: kHeading6,
                               ),
-                              BlocProvider(
-                                  create: (_) => di.locator<MovieDetailBloc>()
-                                    ..add(
-                                      FetchMovieRecommendationsEvent(
-                                        tID: widget.movie.id,
-                                      ),
-                                    ),
-                                  child: BlocBuilder<MovieDetailBloc,
-                                      MovieDetailState>(
-                                    builder: (context, state) {
-                                      if (state is MovieRecommendationLoaded) {
-                                        return MovieRecommendation(
-                                          recommendations:
-                                              state.recommendationMovies,
-                                        );
-                                      }
-
-                                      if (state is MovieDetailFailed) {
-                                        return Text(state.error);
-                                      }
-
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  )),
+                              RecommendationSection(
+                                locator: locator,
+                                movieID: widget.movie.id,
+                              ),
                             ],
                           ),
                         ),
@@ -288,6 +272,44 @@ class _DetailContentState extends State<DetailContent> {
     } else {
       return '${minutes}m';
     }
+  }
+}
+
+class RecommendationSection extends StatelessWidget {
+  final GetIt locator;
+  final int movieID;
+  const RecommendationSection({
+    super.key,
+    required this.locator,
+    required this.movieID,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (_) => locator<MovieDetailBloc>()
+          ..add(
+            FetchMovieRecommendationsEvent(
+              tID: movieID,
+            ),
+          ),
+        child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
+          builder: (context, state) {
+            if (state is MovieRecommendationLoaded) {
+              return MovieRecommendation(
+                recommendations: state.recommendationMovies,
+              );
+            }
+
+            if (state is MovieDetailFailed) {
+              return Text(state.error);
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
   }
 }
 

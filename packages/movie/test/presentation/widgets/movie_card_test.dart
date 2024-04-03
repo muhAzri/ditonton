@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:movie/presentation/pages/movie_detail_page.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
@@ -29,6 +30,7 @@ void main() {
               return MaterialPageRoute(
                   builder: (_) => MovieDetailPage(
                         id: id,
+                        locator: GetIt.instance,
                       ));
             }
             return null;

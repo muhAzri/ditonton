@@ -3,6 +3,7 @@ import 'package:core/presentation/pages/watchlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:movie/presentation/pages/pages.dart';
 import 'package:series/presentation/pages/pages.dart';
+import 'package:core/injector.dart' as di;
 
 class AppRouter {
   static Route? onGenerateRoute(RouteSettings settings) {
@@ -28,7 +29,10 @@ class AppRouter {
                 return const OnAirSeriesPage();
               case MovieDetailPage.routeName:
                 final id = settings.arguments as int;
-                return MovieDetailPage(id: id);
+                return MovieDetailPage(
+                  id: id,
+                  locator: di.locator,
+                );
               case SeriesDetailPage.routeName:
                 final id = settings.arguments as int;
                 return SeriesDetailPage(id: id);
