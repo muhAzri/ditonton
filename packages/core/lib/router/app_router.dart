@@ -20,11 +20,15 @@ class AppRouter {
               case '/home-series':
                 return const HomeSeriesPage();
               case PopularMoviesPage.routeName:
-                return const PopularMoviesPage();
+                return PopularMoviesPage(
+                  locator: di.locator,
+                );
               case PopularSeriesPage.routeName:
                 return const PopularSeriesPage();
               case TopRatedMoviesPage.routeName:
-                return const TopRatedMoviesPage();
+                return TopRatedMoviesPage(
+                  locator: di.locator,
+                );
               case TopRatedSeriesPage.routeName:
                 return const TopRatedSeriesPage();
               case OnAirSeriesPage.routeName:
@@ -39,7 +43,9 @@ class AppRouter {
                 final id = settings.arguments as int;
                 return SeriesDetailPage(id: id);
               case SearchPage.routeName:
-                return const SearchPage();
+                return SearchPage(
+                  locator: di.locator,
+                );
               case SearchSeriesPage.routeName:
                 return const SearchSeriesPage();
               case WatchlistPage.routeName:

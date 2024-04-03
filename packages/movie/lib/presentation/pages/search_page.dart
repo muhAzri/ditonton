@@ -1,19 +1,20 @@
 import 'package:core/common/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie/bloc/search_movie/search_movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
-import 'package:core/injector.dart' as di;
 
 class SearchPage extends StatelessWidget {
+  final GetIt locator;
   static const routeName = '/search';
 
-  const SearchPage({super.key});
+  const SearchPage({super.key, required this.locator});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchMovieBloc>(
-      create: (_) => di.locator<SearchMovieBloc>(),
+      create: (_) => locator<SearchMovieBloc>(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Search'),
@@ -75,6 +76,7 @@ class SearchPageContent extends StatelessWidget {
               }
 
               return Expanded(
+                key: const Key("Empty State"),
                 child: Container(),
               );
             },

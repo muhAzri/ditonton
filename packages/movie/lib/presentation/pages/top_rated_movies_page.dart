@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie/bloc/top_rated_movie/top_rated_movie_bloc.dart';
 import 'package:movie/presentation/widgets/movie_card_list.dart';
-import 'package:core/injector.dart' as di;
 
 class TopRatedMoviesPage extends StatelessWidget {
+  final GetIt locator;
+
   static const routeName = '/top-rated-movie';
 
-  const TopRatedMoviesPage({super.key});
+  const TopRatedMoviesPage({super.key, required this.locator});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          di.locator<TopRatedMovieBloc>()..add(FetchTopRatedMoviesEvent()),
+          locator<TopRatedMovieBloc>()..add(FetchTopRatedMoviesEvent()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Top Rated Movies'),
