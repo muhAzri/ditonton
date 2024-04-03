@@ -4,6 +4,7 @@ sealed class MovieDetailEvent extends Equatable {
   const MovieDetailEvent();
 
   @override
+  // coverage:ignore-line
   List<Object> get props => [];
 }
 
