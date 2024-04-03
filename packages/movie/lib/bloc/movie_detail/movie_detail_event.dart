@@ -2,10 +2,11 @@ part of 'movie_detail_bloc.dart';
 
 sealed class MovieDetailEvent extends Equatable {
   const MovieDetailEvent();
-
+  // coverage:ignore-start
   @override
-  // coverage:ignore-line
   List<Object> get props => [];
+  // coverage:ignore-end
+
 }
 
 final class FetchMovieDetailEvent extends MovieDetailEvent {
