@@ -125,5 +125,42 @@ void main() {
         expect(find.byKey(const Key("Empty State")), findsOneWidget);
       },
     );
+    testWidgets(
+      "Search Movie Page Should Trigger Search Event When TextForm is Submitted",
+      (tester) async {
+        whenListen(
+          getIt<SearchMovieBloc>(),
+          Stream.fromIterable([
+            SearchMovieInitial(),
+          ]),
+          initialState: SearchMovieInitial(),
+        );
+
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              SearchPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pump();
+
+        // Find the TextFormField
+        final textFieldFinder = find.byType(TextField);
+
+        // Enter text into the TextFormField
+        await tester.enterText(textFieldFinder, 'search query');
+
+        // Submit the form
+        await tester.testTextInput.receiveAction(TextInputAction.done);
+
+        // Ensure that the SearchEvent is added to the bloc
+        verify(() => mockSearchMovieBloc.add(const SearchEvent('search query')))
+            .called(1);
+      },
+    );
   });
 }
