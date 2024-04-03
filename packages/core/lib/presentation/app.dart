@@ -37,14 +37,15 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
           colorScheme: kColorScheme,
           primaryColor: kRichBlack,
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: const HomeMoviePage(),
+        home: HomeMoviePage(
+          locator: di.locator,
+        ),
         navigatorObservers: [routeObserver],
         onGenerateRoute: AppRouter.onGenerateRoute,
       ),

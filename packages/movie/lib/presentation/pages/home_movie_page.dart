@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/common/constants.dart';
 import 'package:core/presentation/pages/about_page.dart';
 import 'package:core/presentation/pages/watchlist_page.dart';
-import 'package:core/injector.dart' as di;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie/bloc/home_movie/home_movie_bloc.dart';
 import 'package:movie/domain/entities/movie.dart';
 import 'package:movie/presentation/pages/movie_detail_page.dart';
@@ -14,7 +14,8 @@ import 'package:movie/presentation/pages/search_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
 
 class HomeMoviePage extends StatelessWidget {
-  const HomeMoviePage({super.key});
+  final GetIt locator;
+  const HomeMoviePage({super.key, required this.locator});
 
   @override
   Widget build(BuildContext context) {
@@ -41,79 +42,25 @@ class HomeMoviePage extends StatelessWidget {
                 'Now Playing',
                 style: kHeading6,
               ),
-              BlocProvider(
-                create: (_) => di.locator<HomeMovieBloc>()
-                  ..add(
-                    FetchNowPlayingMoviesEvent(),
-                  ),
-                child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
-                  builder: (context, state) {
-                    if (state is HomeMovieFailed) {
-                      return Text(state.error.toString());
-                    }
-
-                    if (state is NowPlayingMoviesLoaded) {
-                      return MovieList(state.nowPlayingMovies);
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+              NowPlayingMovieSection(
+                locator: locator,
               ),
               _buildSubHeading(
                 title: 'Popular',
                 onTap: () =>
                     Navigator.pushNamed(context, PopularMoviesPage.routeName),
               ),
-              BlocProvider(
-                create: (_) => di.locator<HomeMovieBloc>()
-                  ..add(
-                    FetchPopularMoviesEvent(),
-                  ),
-                child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
-                  builder: (context, state) {
-                    if (state is HomeMovieFailed) {
-                      return Text(state.error.toString());
-                    }
-
-                    if (state is PopularMoviesLoaded) {
-                      return MovieList(state.popularMovies);
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+              PopularMovieSection(
+                locator: locator,
               ),
               _buildSubHeading(
                 title: 'Top Rated',
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedMoviesPage.routeName),
               ),
-              BlocProvider(
-                create: (_) => di.locator<HomeMovieBloc>()
-                  ..add(
-                    FetchTopRatedMoviesEvent(),
-                  ),
-                child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
-                  builder: (context, state) {
-                    if (state is HomeMovieFailed) {
-                      return Text(state.error.toString());
-                    }
-
-                    if (state is TopRatedMoviesLoaded) {
-                      return MovieList(state.topRatedMovies);
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ),
+              TopRatedMovieSection(
+                locator: locator,
+              )
             ],
           ),
         ),
@@ -231,6 +178,96 @@ class MovieList extends StatelessWidget {
           );
         },
         itemCount: movies.length,
+      ),
+    );
+  }
+}
+
+class NowPlayingMovieSection extends StatelessWidget {
+  final GetIt locator;
+  const NowPlayingMovieSection({super.key, required this.locator});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => locator<HomeMovieBloc>()
+        ..add(
+          FetchNowPlayingMoviesEvent(),
+        ),
+      child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
+        builder: (context, state) {
+          if (state is HomeMovieFailed) {
+            return Text(state.error.toString());
+          }
+
+          if (state is NowPlayingMoviesLoaded) {
+            return MovieList(state.nowPlayingMovies);
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class PopularMovieSection extends StatelessWidget {
+  final GetIt locator;
+  const PopularMovieSection({super.key, required this.locator});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => locator<HomeMovieBloc>()
+        ..add(
+          FetchPopularMoviesEvent(),
+        ),
+      child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
+        builder: (context, state) {
+          if (state is HomeMovieFailed) {
+            return Text(state.error.toString());
+          }
+
+          if (state is PopularMoviesLoaded) {
+            return MovieList(state.popularMovies);
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class TopRatedMovieSection extends StatelessWidget {
+  final GetIt locator;
+  const TopRatedMovieSection({super.key, required this.locator});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => locator<HomeMovieBloc>()
+        ..add(
+          FetchTopRatedMoviesEvent(),
+        ),
+      child: BlocBuilder<HomeMovieBloc, HomeMovieState>(
+        builder: (context, state) {
+          if (state is HomeMovieFailed) {
+            return Text(state.error.toString());
+          }
+
+          if (state is TopRatedMoviesLoaded) {
+            return MovieList(state.topRatedMovies);
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

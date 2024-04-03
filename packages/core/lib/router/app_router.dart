@@ -14,7 +14,9 @@ class AppRouter {
           builder: (BuildContext context) {
             switch (settings.name) {
               case '/home':
-                return const HomeMoviePage();
+                return HomeMoviePage(
+                  locator: di.locator,
+                );
               case '/home-series':
                 return const HomeSeriesPage();
               case PopularMoviesPage.routeName:
