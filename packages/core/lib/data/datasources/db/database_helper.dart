@@ -12,6 +12,8 @@ class DatabaseHelper {
 
   DatabaseHelper({required this.database});
 
+  // UnTestAble
+  // coverage:ignore-start
   static Future<Database> initDb() async {
     final path = await getDatabasesPath();
     final databasePath = '$path/ditonton.db';
@@ -43,6 +45,7 @@ class DatabaseHelper {
     var db = await openDatabase(databasePath, version: 1, onCreate: onCreate);
     return db;
   }
+  // coverage:ignore-end
 
   Future<int> insertWatchlist(MovieTable movie) async {
     final db = database;
