@@ -5,26 +5,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:movie/bloc/home_movie/home_movie_bloc.dart';
-import 'package:movie/presentation/pages/home_movie_page.dart';
+import 'package:series/bloc/home_series/home_series_bloc.dart';
+import 'package:series/presentation/pages/home_series_page.dart';
 
 import '../../dummy_data/dummy_objects.dart';
 
-class MockHomeMovieBloc extends Mock implements HomeMovieBloc {
-  MockHomeMovieBloc() {
+class MockHomeSeriesBloc extends Mock implements HomeSeriesBloc {
+  MockHomeSeriesBloc() {
     when(() => close()).thenAnswer((_) async => {});
   }
 }
 
 void main() {
-  late MockHomeMovieBloc mockHomeMovieBloc;
+  late MockHomeSeriesBloc mockHomeSeriesBloc;
   late GetIt getIt;
 
   setUp(() {
-    mockHomeMovieBloc = MockHomeMovieBloc();
+    mockHomeSeriesBloc = MockHomeSeriesBloc();
 
     getIt = GetIt.instance;
-    getIt.registerSingleton<HomeMovieBloc>(mockHomeMovieBloc);
+    getIt.registerSingleton<HomeSeriesBloc>(mockHomeSeriesBloc);
   });
 
   Widget makeTestableWidget(Widget body) {
@@ -34,26 +34,26 @@ void main() {
   }
 
   tearDown(() {
-    mockHomeMovieBloc.close();
+    mockHomeSeriesBloc.close();
     getIt.reset();
   });
 
   testWidgets(
-      'HomeMoviePage should render NowPlaying, Popular, and Top Rated Movie Sections',
+      'HomeSeriesPage should render OnAir, Popular, and Top Rated Series Sections',
       (WidgetTester tester) async {
     whenListen(
-        getIt<HomeMovieBloc>(),
+        getIt<HomeSeriesBloc>(),
         Stream.fromIterable(
           [
-            HomeMovieInitial(),
+            HomeSeriesInitial(),
           ],
         ),
-        initialState: HomeMovieInitial());
+        initialState: HomeSeriesInitial());
 
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          HomeMoviePage(
+          HomeSeriesPage(
             locator: getIt,
           ),
         ),
@@ -62,12 +62,12 @@ void main() {
 
     await tester.pump();
 
-    final nowPlayingSection = find.byType(NowPlayingMovieSection);
-    final popularSection = find.byType(PopularMovieSection);
-    final topRatedSection = find.byType(TopRatedMovieSection);
+    final onAirSeriesSection = find.byType(OnAirSeriesSection);
+    final popularSection = find.byType(PopularSeriesSection);
+    final topRatedSection = find.byType(TopRatedSeriesSection);
 
-    expect(find.text("Now Playing"), findsOne);
-    expect(nowPlayingSection, findsOneWidget);
+    expect(find.text("Now On Air"), findsOne);
+    expect(onAirSeriesSection, findsOneWidget);
 
     expect(find.text("Popular"), findsOne);
     expect(popularSection, findsOneWidget);
@@ -76,26 +76,26 @@ void main() {
     expect(topRatedSection, findsOneWidget);
   });
 
-  group("Now Playing Movie Section", () {
+  group("Now Playing Series Section", () {
     testWidgets(
-        'NowPlayingMovieSection should render MovieList when Bloc Is Succes',
+        'OnAirSeriesSection should render SeriesList when Bloc Is Succes',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              NowPlayingMoviesLoaded(nowPlayingMovies: testMovieList)
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              OnAirSeriesLoaded(onAirSeries: testSeriesList)
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: NowPlayingMovieSection(
+              child: OnAirSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -108,29 +108,29 @@ void main() {
       expect(
         find.byType(CachedNetworkImage),
         findsNWidgets(
-          testMovieList.length,
+          testSeriesList.length,
         ),
       );
     });
 
     testWidgets(
-        'NowPlayingMovieSection should render CircularProgress Indicator when Bloc Is Loading',
+        'OnAirSeriesSection should render CircularProgress Indicator when Bloc Is Loading',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: NowPlayingMovieSection(
+              child: OnAirSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -144,24 +144,24 @@ void main() {
     });
 
     testWidgets(
-        'NowPlayingMovieSection should render Error Text when Bloc Is Failed',
+        'OnAirSeriesSection should render Error Text when Bloc Is Failed',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              const HomeMovieFailed(error: "Error Occured")
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              const HomeSeriesFailed(error: "Error Occured")
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: NowPlayingMovieSection(
+              child: OnAirSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -175,26 +175,26 @@ void main() {
     });
   });
 
-  group("Popular Movie Section", () {
+  group("Popular Series Section", () {
     testWidgets(
-        'PopularMovieSection should render MovieList when Bloc Is Succes',
+        'PopularSeriesSection should render SeriesList when Bloc Is Succes',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              PopularMoviesLoaded(popularMovies: testMovieList)
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              PopularSeriesLoaded(popularSeries: testSeriesList)
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: PopularMovieSection(
+              child: PopularSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -207,29 +207,29 @@ void main() {
       expect(
         find.byType(CachedNetworkImage),
         findsNWidgets(
-          testMovieList.length,
+          testSeriesList.length,
         ),
       );
     });
 
     testWidgets(
-        'PopularMovieSection should render CircularProgress Indicator when Bloc Is Loading',
+        'PopularSeriesSection should render CircularProgress Indicator when Bloc Is Loading',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: PopularMovieSection(
+              child: PopularSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -243,24 +243,24 @@ void main() {
     });
 
     testWidgets(
-        'PopularMovieSection should render Error Text when Bloc Is Failed',
+        'PopularSeriesSection should render Error Text when Bloc Is Failed',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              const HomeMovieFailed(error: "Error Occured")
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              const HomeSeriesFailed(error: "Error Occured")
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: PopularMovieSection(
+              child: PopularSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -274,26 +274,26 @@ void main() {
     });
   });
 
-  group("Top Rated Movie Section", () {
+  group("Top Rated Series Section", () {
     testWidgets(
-        'TopRatedMovieSection should render MovieList when Bloc Is Succes',
+        'TopRatedSeriesSection should render SeriesList when Bloc Is Succes',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              TopRatedMoviesLoaded(topRatedMovies: testMovieList)
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              TopRatedSeriesLoaded(topRatedSeries: testSeriesList)
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: TopRatedMovieSection(
+              child: TopRatedSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -306,29 +306,29 @@ void main() {
       expect(
         find.byType(CachedNetworkImage),
         findsNWidgets(
-          testMovieList.length,
+          testSeriesList.length,
         ),
       );
     });
 
     testWidgets(
-        'TopRatedMovieSection should render CircularProgress Indicator when Bloc Is Loading',
+        'TopRatedSeriesSection should render CircularProgress Indicator when Bloc Is Loading',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: TopRatedMovieSection(
+              child: TopRatedSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -342,24 +342,24 @@ void main() {
     });
 
     testWidgets(
-        'TopRatedMovieSection should render Error Text when Bloc Is Failed',
+        'TopRatedSeriesSection should render Error Text when Bloc Is Failed',
         (WidgetTester tester) async {
       whenListen(
-          getIt<HomeMovieBloc>(),
+          getIt<HomeSeriesBloc>(),
           Stream.fromIterable(
             [
-              HomeMovieInitial(),
-              HomeMovieLoading(),
-              const HomeMovieFailed(error: "Error Occured")
+              HomeSeriesInitial(),
+              HomeSeriesLoading(),
+              const HomeSeriesFailed(error: "Error Occured")
             ],
           ),
-          initialState: HomeMovieInitial());
+          initialState: HomeSeriesInitial());
 
       await mockNetworkImages(
         () async => await tester.pumpWidget(
           makeTestableWidget(
             Material(
-              child: TopRatedMovieSection(
+              child: TopRatedSeriesSection(
                 locator: getIt,
               ),
             ),
@@ -419,19 +419,19 @@ void main() {
     );
 
     testWidgets(
-      "Test Tap Movies To Close The Drawer",
+      "Test Tap Movie To Navigate to Home Movie",
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             routes: {
               "/": (context) => Scaffold(
                     drawer: const HomeDrawer(),
-                    body: const Text("Home"),
+                    body: const Text("Home Series"),
                     appBar: AppBar(
                       title: const Text("App Bar"),
                     ),
                   ),
-              "/home-series": (context) => const Text("Home Series"),
+              "/home": (context) => const Text("Home"),
               "/watchlist": (context) => const Text("Watchlist"),
               "/about": (context) => const Text("About")
             },
@@ -450,26 +450,26 @@ void main() {
         expect(homeButton, findsOne);
 
         await tester.tap(homeButton);
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         expect(find.text("Home"), findsOne);
       },
     );
 
     testWidgets(
-      "Test Tap Movies To Navigate to Home Series",
+      "Test Tap TV Series To Close The Drawer",
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             routes: {
               "/": (context) => Scaffold(
                     drawer: const HomeDrawer(),
-                    body: const Text("Home"),
+                    body: const Text("Home Series"),
                     appBar: AppBar(
                       title: const Text("App Bar"),
                     ),
                   ),
-              "/home-series": (context) => const Text("Home Series"),
+              "/home": (context) => const Text("Home"),
               "/watchlist": (context) => const Text("Watchlist"),
               "/about": (context) => const Text("About")
             },
@@ -488,7 +488,7 @@ void main() {
         expect(homeButton, findsOne);
 
         await tester.tap(homeButton);
-        await tester.pumpAndSettle();
+        await tester.pump();
 
         expect(find.text("Home Series"), findsOne);
       },

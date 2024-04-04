@@ -6,26 +6,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:movie/bloc/movie_detail/movie_detail_bloc.dart';
-import 'package:movie/presentation/pages/movie_detail_page.dart';
+import 'package:series/bloc/series_detail/series_detail_bloc.dart';
+import 'package:series/presentation/pages/series_detail_page.dart';
 
 import '../../dummy_data/dummy_objects.dart';
 
-class MockMovieDetailBloc extends Mock implements MovieDetailBloc {
-  MockMovieDetailBloc() {
+class MockSeriesDetailBloc extends Mock implements SeriesDetailBloc {
+  MockSeriesDetailBloc() {
     when(() => close()).thenAnswer((_) async => {});
   }
 }
 
 void main() {
-  late MockMovieDetailBloc mockMovieDetailBloc;
+  late MockSeriesDetailBloc mockSeriesDetailBloc;
   late GetIt getIt;
 
   setUp(() {
-    mockMovieDetailBloc = MockMovieDetailBloc();
+    mockSeriesDetailBloc = MockSeriesDetailBloc();
 
     getIt = GetIt.instance;
-    getIt.registerSingleton<MovieDetailBloc>(mockMovieDetailBloc);
+    getIt.registerSingleton<SeriesDetailBloc>(mockSeriesDetailBloc);
   });
 
   Widget makeTestableWidget(Widget body) {
@@ -35,28 +35,28 @@ void main() {
   }
 
   tearDown(() {
-    mockMovieDetailBloc.close();
+    mockSeriesDetailBloc.close();
     getIt.reset();
   });
 
   testWidgets(
-      'Watchlist button should display add icon when movie not added to watchlist',
+      'Watchlist button should display add icon when series not added to watchlist',
       (WidgetTester tester) async {
     whenListen(
-        getIt<MovieDetailBloc>(),
+        getIt<SeriesDetailBloc>(),
         Stream.fromIterable([
-          MovieDetailInitial(),
-          MovieDetailLoading(),
-          const MovieDetailLoaded(movieDetail: testMovieDetail),
+          SeriesDetailInitial(),
+          SeriesDetailLoading(),
+          const SeriesDetailLoaded(seriesDetail: testSeriesDetail),
         ]),
-        initialState: MovieDetailInitial());
+        initialState: SeriesDetailInitial());
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          MovieDetailPage(
+          SeriesDetailPage(
             id: 1,
             locator: getIt,
           ),
@@ -70,16 +70,16 @@ void main() {
   });
 
   testWidgets(
-      'Watchlist button should dispay check icon when movie is added to wathclist',
+      'Watchlist button should dispay check icon when series is added to wathclist',
       (WidgetTester tester) async {
     whenListen(
-      getIt<MovieDetailBloc>(),
+      getIt<SeriesDetailBloc>(),
       Stream.fromIterable([
-        MovieDetailInitial(),
-        MovieDetailLoading(),
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
         const WatchlistStatusLoaded(true),
       ]),
-      initialState: MovieDetailInitial(),
+      initialState: SeriesDetailInitial(),
     );
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
@@ -87,10 +87,10 @@ void main() {
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          BlocProvider<MovieDetailBloc>(
-            create: (_) => getIt<MovieDetailBloc>(),
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
             child: DetailContent(
-              testMovieDetail,
+              testSeriesDetail,
               locator: getIt,
             ),
           ),
@@ -107,13 +107,13 @@ void main() {
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
     whenListen(
-      getIt<MovieDetailBloc>(),
+      getIt<SeriesDetailBloc>(),
       Stream.fromIterable([
-        MovieDetailInitial(),
-        MovieDetailLoading(),
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
         const WatchlistChangeSuccess(message: "Added to Watchlist"),
       ]),
-      initialState: MovieDetailInitial(),
+      initialState: SeriesDetailInitial(),
     );
 
     final watchlistButton = find.byType(ElevatedButton);
@@ -121,11 +121,11 @@ void main() {
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          BlocProvider<MovieDetailBloc>(
-            create: (_) => getIt<MovieDetailBloc>(),
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
             child: Scaffold(
               body: DetailContent(
-                testMovieDetail,
+                testSeriesDetail,
                 locator: getIt,
               ),
             ),
@@ -147,13 +147,13 @@ void main() {
       'Watchlist button should display Snackbar when removed from watchlist',
       (WidgetTester tester) async {
     whenListen(
-      getIt<MovieDetailBloc>(),
+      getIt<SeriesDetailBloc>(),
       Stream.fromIterable([
-        MovieDetailInitial(),
-        MovieDetailLoading(),
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
         const WatchlistChangeSuccess(message: "Removed from Watchlist"),
       ]),
-      initialState: MovieDetailInitial(),
+      initialState: SeriesDetailInitial(),
     );
 
     final watchlistButton = find.byType(ElevatedButton);
@@ -161,11 +161,11 @@ void main() {
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          BlocProvider<MovieDetailBloc>(
-            create: (_) => getIt<MovieDetailBloc>(),
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
             child: Scaffold(
               body: DetailContent(
-                testMovieDetail,
+                testSeriesDetail,
                 locator: getIt,
               ),
             ),
@@ -187,13 +187,13 @@ void main() {
       'Watchlist button should display AlertDialog when add to watchlist failed',
       (WidgetTester tester) async {
     whenListen(
-      getIt<MovieDetailBloc>(),
+      getIt<SeriesDetailBloc>(),
       Stream.fromIterable([
-        MovieDetailInitial(),
-        MovieDetailLoading(),
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
         const WatchlistChangeSuccess(message: "Failed"),
       ]),
-      initialState: MovieDetailInitial(),
+      initialState: SeriesDetailInitial(),
     );
 
     final watchlistButton = find.byType(ElevatedButton);
@@ -201,11 +201,11 @@ void main() {
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          BlocProvider<MovieDetailBloc>(
-            create: (_) => getIt<MovieDetailBloc>(),
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
             child: Scaffold(
               body: DetailContent(
-                testMovieDetail,
+                testSeriesDetail,
                 locator: getIt,
               ),
             ),
@@ -223,16 +223,16 @@ void main() {
     expect(find.text('Failed'), findsOneWidget);
   });
 
-  testWidgets('Render Recommendation Movie Horizontal List when Success',
+  testWidgets('Render Recommendation Series Horizontal List when Success',
       (WidgetTester tester) async {
     whenListen(
-      getIt<MovieDetailBloc>(),
+      getIt<SeriesDetailBloc>(),
       Stream.fromIterable([
-        MovieDetailInitial(),
-        MovieDetailLoading(),
-        MovieRecommendationLoaded(recommendationMovies: testMovieList),
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        SeriesRecommendationLoaded(recommendationSeries: testSeriesList),
       ]),
-      initialState: MovieDetailInitial(),
+      initialState: SeriesDetailInitial(),
     );
 
     const tId = 1;
@@ -240,11 +240,11 @@ void main() {
     await mockNetworkImages(
       () async => await tester.pumpWidget(
         makeTestableWidget(
-          BlocProvider<MovieDetailBloc>(
-            create: (_) => getIt<MovieDetailBloc>(),
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
             child: Scaffold(
               body: RecommendationSection(
-                movieID: tId,
+                seriesId: tId,
                 locator: getIt,
               ),
             ),
@@ -257,6 +257,25 @@ void main() {
 
     expect(find.byType(ListView), findsOneWidget);
     expect(
-        find.byType(CachedNetworkImage), findsNWidgets(testMovieList.length));
+        find.byType(CachedNetworkImage), findsNWidgets(testSeriesList.length));
+  });
+
+  testWidgets("Render Season Information As ListView", (tester) async {
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          const SeriesSeasons(
+            serie: testSeriesDetail,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
+
+    expect(find.byType(ListView), findsOneWidget);
+    expect(
+        find.byType(CachedNetworkImage), findsNWidgets(testSeriesList.length));
+
   });
 }

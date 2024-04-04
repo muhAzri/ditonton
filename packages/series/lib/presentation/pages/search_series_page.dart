@@ -13,11 +13,14 @@ class SearchSeriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search'),
+    return BlocProvider(
+      create: (context) => locator<SearchSeriesBloc>(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Search'),
+        ),
+        body: const SearchSeriesContent(),
       ),
-      body: const SearchSeriesContent(),
     );
   }
 }
