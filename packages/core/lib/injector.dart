@@ -1,4 +1,5 @@
 import 'package:core/data/datasources/db/database_helper.dart';
+import 'package:core/ssl_pinning.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 import 'package:movie/bloc/home_movie/home_movie_bloc.dart';
@@ -26,6 +27,10 @@ Future<void> init() async {
   final database = await DatabaseHelper.initDb();
   // helper
   locator.registerFactory(() => DatabaseHelper(database: database));
+
+  //HTTP Client
+  final client = await getSSLPinningClient();
+  locator.registerFactory<http.Client>(() => client);
 
   //BLOC
   locator.registerFactory(
@@ -159,7 +164,4 @@ Future<void> init() async {
       () => SeriesRemoteDataSourceImpl(client: locator()));
   locator.registerLazySingleton<SeriesLocalDataSource>(
       () => SeriesLocalDataSourceImpl(databaseHelper: locator()));
-
-  // external
-  locator.registerLazySingleton(() => http.Client());
 }
