@@ -1,5 +1,6 @@
 # a199-flutter-expert-project
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos)
+[![codecov](https://codecov.io/gh/muhAzri/ditonton/graph/badge.svg?token=URmhjxig7l)](https://codecov.io/gh/muhAzri/ditonton)
 
 
 Repository ini merupakan starter project submission kelas Flutter Expert Dicoding Indonesia.
