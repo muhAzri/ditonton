@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "109208664641",
+    "project_id": "ditonton-azri",
+    "storage_bucket": "ditonton-azri.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109208664641:android:1c9120a63558a4c98724c0",
+        "android_client_info": {
+          "package_name": "com.dicoding.ditonton"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcLtLiDsvAbE3vtwYK4iaXBQln4ckddP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
