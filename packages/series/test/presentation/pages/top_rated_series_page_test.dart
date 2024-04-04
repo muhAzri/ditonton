@@ -1,66 +1,129 @@
-import 'package:core/common/state_enum.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-import 'package:series/domain/entities/series.dart';
-import 'package:series/presentation/pages/pages.dart';
-import 'package:series/presentation/provider/provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:series/bloc/top_rated_series/top_rated_series_bloc.dart';
+import 'package:series/presentation/pages/top_rated_series_page.dart';
+import 'package:series/presentation/widgets/series_card_list.dart';
 
-import 'top_rated_series_page_test.mocks.dart';
+import '../../dummy_data/dummy_objects.dart';
 
-@GenerateMocks([TopRatedSeriesNotifier])
+class MockTopRatedSeriesBloc extends Mock implements TopRatedSeriesBloc {
+  MockTopRatedSeriesBloc() {
+    when(() => close()).thenAnswer((_) async => {});
+  }
+}
+
 void main() {
-  late MockTopRatedSeriesNotifier mockNotifier;
+  late MockTopRatedSeriesBloc mockTopRatedSeriesBloc;
+  late GetIt getIt;
 
   setUp(() {
-    mockNotifier = MockTopRatedSeriesNotifier();
+    mockTopRatedSeriesBloc = MockTopRatedSeriesBloc();
+
+    getIt = GetIt.instance;
+    getIt.registerSingleton<TopRatedSeriesBloc>(mockTopRatedSeriesBloc);
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TopRatedSeriesNotifier>.value(
-      value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
+    return MaterialApp(
+      home: body,
     );
   }
 
-  testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loading);
-
-    final progressFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
-
-    await tester.pumpWidget(makeTestableWidget(const TopRatedSeriesPage()));
-
-    expect(centerFinder, findsOneWidget);
-    expect(progressFinder, findsOneWidget);
+  tearDown(() {
+    mockTopRatedSeriesBloc.close();
+    getIt.reset();
   });
 
-  testWidgets('Page should display when data is loaded',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(<Series>[]);
+  group("TopRated Series Page Test", () {
+    testWidgets(
+      "TopRated Series Page Should Render List Of Seriess When Bloc is Success",
+      (tester) async {
+        whenListen(
+          getIt<TopRatedSeriesBloc>(),
+          Stream.fromIterable([
+            TopRatedSeriesInitial(),
+            TopRatedSeriesLoading(),
+            TopRatedSeriesLoaded(series: testSeriesList)
+          ]),
+          initialState: TopRatedSeriesInitial(),
+        );
 
-    final listViewFinder = find.byType(ListView);
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              TopRatedSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
 
-    await tester.pumpWidget(makeTestableWidget(const TopRatedSeriesPage()));
+        await tester.pump();
 
-    expect(listViewFinder, findsOneWidget);
-  });
+        expect(find.byType(ListView), findsOneWidget);
+        expect(find.byType(SeriesCard), findsNWidgets(testSeriesList.length));
+      },
+    );
 
-  testWidgets('Page should display text with message when Error',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.error);
-    when(mockNotifier.message).thenReturn('Error message');
+    testWidgets(
+      "TopRated Series Page Should Render Error Text When Bloc is Error",
+      (tester) async {
+        whenListen(
+          getIt<TopRatedSeriesBloc>(),
+          Stream.fromIterable([
+            TopRatedSeriesInitial(),
+            TopRatedSeriesLoading(),
+            const TopRatedSeriesFailed(error: "Error Occured")
+          ]),
+          initialState: TopRatedSeriesInitial(),
+        );
 
-    final textFinder = find.byKey(const Key('error_message'));
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              TopRatedSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
 
-    await tester.pumpWidget(makeTestableWidget(const TopRatedSeriesPage()));
+        await tester.pump();
 
-    expect(textFinder, findsOneWidget);
+        expect(find.text("Error Occured"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "TopRated Series Page Should Render Circular Progress Indicator When Bloc is Loading",
+      (tester) async {
+        whenListen(
+          getIt<TopRatedSeriesBloc>(),
+          Stream.fromIterable([
+            TopRatedSeriesInitial(),
+            TopRatedSeriesLoading(),
+          ]),
+          initialState: TopRatedSeriesInitial(),
+        );
+
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              TopRatedSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      },
+    );
   });
 }

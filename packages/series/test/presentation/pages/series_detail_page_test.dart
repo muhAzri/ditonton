@@ -1,47 +1,70 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core/common/state_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
-import 'package:provider/provider.dart';
-import 'package:series/domain/entities/series.dart';
-import 'package:series/presentation/pages/pages.dart';
-import 'package:series/presentation/provider/provider.dart';
+import 'package:series/bloc/series_detail/series_detail_bloc.dart';
+import 'package:series/presentation/pages/series_detail_page.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import 'series_detail_page_test.mocks.dart';
 
-@GenerateMocks([SeriesDetailNotifier])
+class MockSeriesDetailBloc extends Mock implements SeriesDetailBloc {
+  MockSeriesDetailBloc() {
+    when(() => close()).thenAnswer((_) async => {});
+  }
+}
+
 void main() {
-  late MockSeriesDetailNotifier mockNotifier;
+  late MockSeriesDetailBloc mockSeriesDetailBloc;
+  late GetIt getIt;
 
   setUp(() {
-    mockNotifier = MockSeriesDetailNotifier();
+    mockSeriesDetailBloc = MockSeriesDetailBloc();
+
+    getIt = GetIt.instance;
+    getIt.registerSingleton<SeriesDetailBloc>(mockSeriesDetailBloc);
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<SeriesDetailNotifier>.value(
-      value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
+    return MaterialApp(
+      home: body,
     );
   }
+
+  tearDown(() {
+    mockSeriesDetailBloc.close();
+    getIt.reset();
+  });
 
   testWidgets(
       'Watchlist button should display add icon when series not added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.seriesRecommendation).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    whenListen(
+        getIt<SeriesDetailBloc>(),
+        Stream.fromIterable([
+          SeriesDetailInitial(),
+          SeriesDetailLoading(),
+          const SeriesDetailLoaded(seriesDetail: testSeriesDetail),
+        ]),
+        initialState: SeriesDetailInitial());
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          SeriesDetailPage(
+            id: 1,
+            locator: getIt,
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -49,15 +72,33 @@ void main() {
   testWidgets(
       'Watchlist button should dispay check icon when series is added to wathclist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.seriesRecommendation).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
+    whenListen(
+      getIt<SeriesDetailBloc>(),
+      Stream.fromIterable([
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        const WatchlistStatusLoaded(true),
+      ]),
+      initialState: SeriesDetailInitial(),
+    );
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
+            child: DetailContent(
+              testSeriesDetail,
+              locator: getIt,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -65,84 +106,176 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.seriesRecommendation).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Added to Watchlist');
+    whenListen(
+      getIt<SeriesDetailBloc>(),
+      Stream.fromIterable([
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        const WatchlistChangeSuccess(message: "Added to Watchlist"),
+      ]),
+      initialState: SeriesDetailInitial(),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
+            child: Scaffold(
+              body: DetailContent(
+                testSeriesDetail,
+                locator: getIt,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
-    await tester.tap(watchlistButton);
     await tester.pump();
+    await tester.tap(watchlistButton, warnIfMissed: false);
 
     expect(find.byType(SnackBar), findsOneWidget);
     expect(find.text('Added to Watchlist'), findsOneWidget);
   });
 
   testWidgets(
-      'Watchlist button should display AlertDialog when add to watchlist failed',
+      'Watchlist button should display Snackbar when removed from watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.seriesRecommendation).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
+    whenListen(
+      getIt<SeriesDetailBloc>(),
+      Stream.fromIterable([
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        const WatchlistChangeSuccess(message: "Removed from Watchlist"),
+      ]),
+      initialState: SeriesDetailInitial(),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
+            child: Scaffold(
+              body: DetailContent(
+                testSeriesDetail,
+                locator: getIt,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
-    await tester.tap(watchlistButton);
     await tester.pump();
+    await tester.tap(watchlistButton, warnIfMissed: false);
+
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Removed from Watchlist'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Watchlist button should display AlertDialog when add to watchlist failed',
+      (WidgetTester tester) async {
+    whenListen(
+      getIt<SeriesDetailBloc>(),
+      Stream.fromIterable([
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        const WatchlistChangeSuccess(message: "Failed"),
+      ]),
+      initialState: SeriesDetailInitial(),
+    );
+
+    final watchlistButton = find.byType(ElevatedButton);
+
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
+            child: Scaffold(
+              body: DetailContent(
+                testSeriesDetail,
+                locator: getIt,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.add), findsOneWidget);
+
+    await tester.pump();
+    await tester.tap(watchlistButton, warnIfMissed: false);
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
   });
 
-  testWidgets(
-    "Render Recommendation Series Horizontal List when Success",
-    (widgetTester) async {
-      final List<Series> series = testSeriesList;
+  testWidgets('Render Recommendation Series Horizontal List when Success',
+      (WidgetTester tester) async {
+    whenListen(
+      getIt<SeriesDetailBloc>(),
+      Stream.fromIterable([
+        SeriesDetailInitial(),
+        SeriesDetailLoading(),
+        SeriesRecommendationLoaded(recommendationSeries: testSeriesList),
+      ]),
+      initialState: SeriesDetailInitial(),
+    );
 
-      await mockNetworkImages(
-        () async => await widgetTester.pumpWidget(
-          makeTestableWidget(
-            Material(child: RecommendationSeries(recommendations: series)),
+    const tId = 1;
+
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          BlocProvider<SeriesDetailBloc>(
+            create: (_) => getIt<SeriesDetailBloc>(),
+            child: Scaffold(
+              body: RecommendationSection(
+                seriesId: tId,
+                locator: getIt,
+              ),
+            ),
           ),
         ),
-      );
+      ),
+    );
 
-      expect(find.byType(ListView), findsOneWidget);
-      expect(find.byType(CachedNetworkImage), findsNWidgets(series.length));
-    },
-  );
+    await tester.pump();
 
-  testWidgets(
-    "Render Series Seasons List when Success",
-    (widgetTester) async {
-      await mockNetworkImages(
-        () async => await widgetTester.pumpWidget(
-          makeTestableWidget(
-            const Material(
-                child: SeriesSeasons(
-              serie: testSeriesDetail,
-            )),
+    expect(find.byType(ListView), findsOneWidget);
+    expect(
+        find.byType(CachedNetworkImage), findsNWidgets(testSeriesList.length));
+  });
+
+  testWidgets("Render Season Information As ListView", (tester) async {
+    await mockNetworkImages(
+      () async => await tester.pumpWidget(
+        makeTestableWidget(
+          const SeriesSeasons(
+            serie: testSeriesDetail,
           ),
         ),
-      );
+      ),
+    );
 
-      expect(find.byType(ListView), findsOneWidget);
-      expect(find.byType(CachedNetworkImage),
-          findsNWidgets(testSeriesDetail.seasons.length));
-    },
-  );
+    await tester.pump();
+
+    expect(find.byType(ListView), findsOneWidget);
+    expect(
+        find.byType(CachedNetworkImage), findsNWidgets(testSeriesList.length));
+
+  });
 }

@@ -1,66 +1,129 @@
-import 'package:core/common/state_enum.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-import 'package:series/domain/entities/series.dart';
-import 'package:series/presentation/pages/pages.dart';
-import 'package:series/presentation/provider/provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:series/bloc/on_air_series/on_air_series_bloc.dart';
+import 'package:series/presentation/pages/on_air_series_page.dart';
+import 'package:series/presentation/widgets/series_card_list.dart';
 
-import 'on_air_series_page_test.mocks.dart';
+import '../../dummy_data/dummy_objects.dart';
 
-@GenerateMocks([OnAirSeriesNotifier])
+class MockOnAirSeriesBloc extends Mock implements OnAirSeriesBloc {
+  MockOnAirSeriesBloc() {
+    when(() => close()).thenAnswer((_) async => {});
+  }
+}
+
 void main() {
-  late MockOnAirSeriesNotifier mockNotifier;
+  late MockOnAirSeriesBloc mockOnAirSeriesBloc;
+  late GetIt getIt;
 
   setUp(() {
-    mockNotifier = MockOnAirSeriesNotifier();
+    mockOnAirSeriesBloc = MockOnAirSeriesBloc();
+
+    getIt = GetIt.instance;
+    getIt.registerSingleton<OnAirSeriesBloc>(mockOnAirSeriesBloc);
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<OnAirSeriesNotifier>.value(
-      value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
+    return MaterialApp(
+      home: body,
     );
   }
 
-  testWidgets('Page should display center progress bar when loading',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loading);
-
-    final progressBarFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
-
-    await tester.pumpWidget(makeTestableWidget(const OnAirSeriesPage()));
-
-    expect(centerFinder, findsOneWidget);
-    expect(progressBarFinder, findsOneWidget);
+  tearDown(() {
+    mockOnAirSeriesBloc.close();
+    getIt.reset();
   });
 
-  testWidgets('Page should display ListView when data is loaded',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loaded);
-    when(mockNotifier.series).thenReturn(<Series>[]);
+  group("On Air Series Page Test", () {
+    testWidgets(
+      "On Air Series Page Should Render List Of Seriess When Bloc is Success",
+      (tester) async {
+        whenListen(
+          getIt<OnAirSeriesBloc>(),
+          Stream.fromIterable([
+            OnAirSeriesInitial(),
+            OnAirSeriesLoading(),
+            OnAirSeriesLoaded(series: testSeriesList)
+          ]),
+          initialState: OnAirSeriesInitial(),
+        );
 
-    final listViewFinder = find.byType(ListView);
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              OnAirSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
 
-    await tester.pumpWidget(makeTestableWidget(const OnAirSeriesPage()));
+        await tester.pump();
 
-    expect(listViewFinder, findsOneWidget);
-  });
+        expect(find.byType(ListView), findsOneWidget);
+        expect(find.byType(SeriesCard), findsNWidgets(testSeriesList.length));
+      },
+    );
 
-  testWidgets('Page should display text with message when Error',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.error);
-    when(mockNotifier.message).thenReturn('Error message');
+    testWidgets(
+      "On Air Series Page Should Render Error Text When Bloc is Error",
+      (tester) async {
+        whenListen(
+          getIt<OnAirSeriesBloc>(),
+          Stream.fromIterable([
+            OnAirSeriesInitial(),
+            OnAirSeriesLoading(),
+            const OnAirSeriesFailed(error: "Error Occured")
+          ]),
+          initialState: OnAirSeriesInitial(),
+        );
 
-    final textFinder = find.byKey(const Key('error_message'));
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              OnAirSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
 
-    await tester.pumpWidget(makeTestableWidget(const OnAirSeriesPage()));
+        await tester.pump();
 
-    expect(textFinder, findsOneWidget);
+        expect(find.text("Error Occured"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "On Air Series Page Should Render Circular Progress Indicator When Bloc is Loading",
+      (tester) async {
+        whenListen(
+          getIt<OnAirSeriesBloc>(),
+          Stream.fromIterable([
+            OnAirSeriesInitial(),
+            OnAirSeriesLoading(),
+          ]),
+          initialState: OnAirSeriesInitial(),
+        );
+
+        await mockNetworkImages(
+          () async => await tester.pumpWidget(
+            makeTestableWidget(
+              OnAirSeriesPage(
+                locator: getIt,
+              ),
+            ),
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      },
+    );
   });
 }

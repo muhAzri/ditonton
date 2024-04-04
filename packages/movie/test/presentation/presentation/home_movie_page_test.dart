@@ -372,4 +372,202 @@ void main() {
       expect(find.text("Error Occured"), findsOne);
     });
   });
+
+  group("Home Drawer Tests", () {
+    testWidgets(
+      "Home Drawer Render Smoothly",
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              "/": (context) => Scaffold(
+                    drawer: const HomeDrawer(),
+                    body: const Text("Home"),
+                    appBar: AppBar(
+                      title: const Text("App Bar"),
+                    ),
+                  ),
+              "/home-series": (context) => const Text("Home Series"),
+              "/watchlist": (context) => const Text("Watchlist"),
+              "/about": (context) => const Text("About")
+            },
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(HomeDrawer), findsNothing);
+
+        // Tap to open the drawer
+        await tester.tap(find.byIcon(Icons.menu));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(HomeDrawer), findsOne);
+        expect(find.text("Ditonton"), findsOne);
+        expect(find.text("ditonton@dicoding.com"), findsOne);
+
+        expect(
+          find.byType(ListTile),
+          findsNWidgets(4),
+        );
+
+        expect(find.text("Movies"), findsOne);
+        expect(find.text("TV Series"), findsOne);
+        expect(find.text("Watchlist"), findsOne);
+        expect(find.text("About"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "Test Tap Movies To Close The Drawer",
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              "/": (context) => Scaffold(
+                    drawer: const HomeDrawer(),
+                    body: const Text("Home"),
+                    appBar: AppBar(
+                      title: const Text("App Bar"),
+                    ),
+                  ),
+              "/home-series": (context) => const Text("Home Series"),
+              "/watchlist": (context) => const Text("Watchlist"),
+              "/about": (context) => const Text("About")
+            },
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(HomeDrawer), findsNothing);
+
+        // Tap to open the drawer
+        await tester.tap(find.byIcon(Icons.menu));
+        await tester.pumpAndSettle();
+
+        final homeButton = find.text("Movies");
+        expect(homeButton, findsOne);
+
+        await tester.tap(homeButton);
+        await tester.pump();
+
+        expect(find.text("Home"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "Test Tap Movies To Navigate to Home Series",
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              "/": (context) => Scaffold(
+                    drawer: const HomeDrawer(),
+                    body: const Text("Home"),
+                    appBar: AppBar(
+                      title: const Text("App Bar"),
+                    ),
+                  ),
+              "/home-series": (context) => const Text("Home Series"),
+              "/watchlist": (context) => const Text("Watchlist"),
+              "/about": (context) => const Text("About")
+            },
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(HomeDrawer), findsNothing);
+
+        // Tap to open the drawer
+        await tester.tap(find.byIcon(Icons.menu));
+        await tester.pumpAndSettle();
+
+        final homeButton = find.text("TV Series");
+        expect(homeButton, findsOne);
+
+        await tester.tap(homeButton);
+        await tester.pumpAndSettle();
+
+        expect(find.text("Home Series"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "Test Tap Movies To Navigate to Watchlist Pages",
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              "/": (context) => Scaffold(
+                    drawer: const HomeDrawer(),
+                    body: const Text("Home"),
+                    appBar: AppBar(
+                      title: const Text("App Bar"),
+                    ),
+                  ),
+              "/home-series": (context) => const Text("Home Series"),
+              "/watchlist": (context) => const Text("Watchlist"),
+              "/about": (context) => const Text("About")
+            },
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(HomeDrawer), findsNothing);
+
+        // Tap to open the drawer
+        await tester.tap(find.byIcon(Icons.menu));
+        await tester.pumpAndSettle();
+
+        final watchlistButton = find.text("Watchlist");
+        expect(watchlistButton, findsOne);
+
+        await tester.tap(watchlistButton);
+        await tester.pumpAndSettle();
+
+        expect(find.text("Watchlist"), findsOne);
+      },
+    );
+
+    testWidgets(
+      "Test Tap Movies To Navigate to About Page",
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              "/": (context) => Scaffold(
+                    drawer: const HomeDrawer(),
+                    body: const Text("Home"),
+                    appBar: AppBar(
+                      title: const Text("App Bar"),
+                    ),
+                  ),
+              "/home-series": (context) => const Text("Home Series"),
+              "/watchlist": (context) => const Text("Watchlist"),
+              "/about": (context) => const Text("About")
+            },
+          ),
+        );
+
+        await tester.pump();
+
+        expect(find.byType(HomeDrawer), findsNothing);
+
+        // Tap to open the drawer
+        await tester.tap(find.byIcon(Icons.menu));
+        await tester.pumpAndSettle();
+
+        final aboutButton = find.text("About");
+        expect(aboutButton, findsOne);
+
+        await tester.tap(aboutButton);
+        await tester.pumpAndSettle();
+
+        expect(find.text("About"), findsOne);
+      },
+    );
+  });
 }
