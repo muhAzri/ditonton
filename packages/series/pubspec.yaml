@@ -23,6 +23,7 @@ dependencies:
   provider: ^6.1.2
 
 dev_dependencies:
+  bloc_test: ^9.1.7
   build_runner: ^2.4.9
   flutter_lints: ^3.0.0
   flutter_test:
