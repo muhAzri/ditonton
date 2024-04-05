@@ -58,7 +58,7 @@ class AppRouter {
                   locator: di.locator,
                 );
               case SearchSeriesPage.routeName:
-                return  SearchSeriesPage(
+                return SearchSeriesPage(
                   locator: di.locator,
                 );
               case WatchlistPage.routeName:
