@@ -1,10 +1,8 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../helpers/test_helper.mocks.dart';
 import 'package:movie/domain/usecases/usecases.dart';
-
 
 void main() {
   late GetWatchListStatus usecase;
