@@ -1,9 +1,12 @@
 name: Melos Flutter Test Workflow
 
 on:
-  push:
+  pull_request:
     branches:
       - '*'
+  push:
+    branches:
+      - main
 
 jobs:
   melos_flutter_tests:
@@ -19,13 +22,18 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Install Melos
+        run: flutter pub global activate melos
+
       - name: Get dependencies
         run: |
-          flutter pub get
-    
+          flutter pub global run melos bootstrap
+          flutter pub global run melos pubget
+          flutter pub global activate coverde
+
       - name: Run tests
         run: |
-          flutter test --coverage
+          flutter pub global run melos test-coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4-beta
