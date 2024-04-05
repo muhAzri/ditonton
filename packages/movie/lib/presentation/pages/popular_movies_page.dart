@@ -27,7 +27,10 @@ class PopularMoviesPage extends StatelessWidget {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final movie = state.movies[index];
-                    return MovieCard(movie);
+                    return MovieCard(
+                      movie,
+                      key: Key("popular_movie_item_$index"),
+                    );
                   },
                   itemCount: state.movies.length,
                 );

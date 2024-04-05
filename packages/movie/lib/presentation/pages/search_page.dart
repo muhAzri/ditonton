@@ -38,6 +38,7 @@ class SearchPageContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
+            key: const Key("text_field_search_movie"),
             onSubmitted: (query) {
               context.read<SearchMovieBloc>().add(SearchEvent(query));
             },
@@ -68,7 +69,10 @@ class SearchPageContent extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     itemBuilder: (context, index) {
                       final movie = result[index];
-                      return MovieCard(movie);
+                      return MovieCard(
+                        movie,
+                        key: Key("search_movie_item_$index"),
+                      );
                     },
                     itemCount: result.length,
                   ),

@@ -47,16 +47,22 @@ class HomeMoviePage extends StatelessWidget {
               ),
               _buildSubHeading(
                 title: 'Popular',
-                onTap: () =>
-                    Navigator.pushNamed(context, PopularMoviesPage.routeName),
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  PopularMoviesPage.routeName,
+                ),
+                buttonKey: "btn_popular_movies",
               ),
               PopularMovieSection(
                 locator: locator,
               ),
               _buildSubHeading(
                 title: 'Top Rated',
-                onTap: () =>
-                    Navigator.pushNamed(context, TopRatedMoviesPage.routeName),
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  TopRatedMoviesPage.routeName,
+                ),
+                buttonKey: "btn_top_rated_movies",
               ),
               TopRatedMovieSection(
                 locator: locator,
@@ -68,7 +74,11 @@ class HomeMoviePage extends StatelessWidget {
     );
   }
 
-  Row _buildSubHeading({required String title, required Function() onTap}) {
+  Row _buildSubHeading({
+    required String title,
+    required Function() onTap,
+    required String buttonKey,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -77,6 +87,7 @@ class HomeMoviePage extends StatelessWidget {
           style: kHeading6,
         ),
         InkWell(
+          key: Key(buttonKey),
           onTap: onTap,
           child: const Padding(
             padding: EdgeInsets.all(8.0),
@@ -146,8 +157,9 @@ class HomeDrawer extends StatelessWidget {
 
 class MovieList extends StatelessWidget {
   final List<Movie> movies;
+  final String keyPrefix;
 
-  const MovieList(this.movies, {super.key});
+  const MovieList(this.movies, {super.key, required this.keyPrefix});
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +170,7 @@ class MovieList extends StatelessWidget {
         itemBuilder: (context, index) {
           final movie = movies[index];
           return Container(
+            key: Key("${keyPrefix}_item_$index"),
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
@@ -204,7 +217,10 @@ class NowPlayingMovieSection extends StatelessWidget {
           }
 
           if (state is NowPlayingMoviesLoaded) {
-            return MovieList(state.nowPlayingMovies);
+            return MovieList(
+              state.nowPlayingMovies,
+              keyPrefix: "now_playing_movie",
+            );
           }
 
           return const Center(
@@ -234,7 +250,10 @@ class PopularMovieSection extends StatelessWidget {
           }
 
           if (state is PopularMoviesLoaded) {
-            return MovieList(state.popularMovies);
+            return MovieList(
+              state.popularMovies,
+              keyPrefix: "popular_movie",
+            );
           }
 
           return const Center(
@@ -264,7 +283,10 @@ class TopRatedMovieSection extends StatelessWidget {
           }
 
           if (state is TopRatedMoviesLoaded) {
-            return MovieList(state.topRatedMovies);
+            return MovieList(
+              state.topRatedMovies,
+              keyPrefix: "top_rated_movie",
+            );
           }
 
           return const Center(
