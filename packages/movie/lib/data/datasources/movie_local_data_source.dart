@@ -1,4 +1,3 @@
-
 import 'package:core/common/exception.dart';
 import 'package:core/data/datasources/datasources.dart';
 import 'package:movie/data/models/movie_table.dart';

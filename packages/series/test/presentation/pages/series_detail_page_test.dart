@@ -276,6 +276,5 @@ void main() {
     expect(find.byType(ListView), findsOneWidget);
     expect(
         find.byType(CachedNetworkImage), findsNWidgets(testSeriesList.length));
-
   });
 }

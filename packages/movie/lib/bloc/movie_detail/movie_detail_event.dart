@@ -6,7 +6,6 @@ sealed class MovieDetailEvent extends Equatable {
   @override
   List<Object> get props => [];
   // coverage:ignore-end
-
 }
 
 final class FetchMovieDetailEvent extends MovieDetailEvent {

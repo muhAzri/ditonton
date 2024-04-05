@@ -6,7 +6,6 @@ import 'package:series/domain/usecases/usecases.dart';
 import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
-
 void main() {
   late GetWatchlistSeries usecase;
   late MockSeriesRepository mockSeriesRepository;
