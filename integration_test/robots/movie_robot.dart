@@ -72,7 +72,7 @@ class MoviesRobot {
   }
 
   Future<void> _watchlistPageTest() async {
-    await drawerAppRobot.clickNavigationDrawerButtonMovie();
+    await drawerAppRobot.clickNavigationDrawerButton();
     await drawerAppRobot.clickWatchlistListTile();
     // Watchlist movie page
     await watchlistMovieRobot.scrollWatchlistMoviePage();

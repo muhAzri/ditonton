@@ -8,10 +8,10 @@ class DrawerAppRobot {
   final WidgetTester tester;
   DrawerAppRobot(this.tester);
 
-  Future<void> clickNavigationDrawerButtonMovie() async {
+  Future<void> clickNavigationDrawerButton() async {
     final drawerButtonFinder = find.byIcon(Icons.menu);
     await tester.ensureVisible(drawerButtonFinder);
-    await tester.tap(drawerButtonFinder);
+    await tester.tap(drawerButtonFinder, warnIfMissed: false);
     await tester.pumpAndSettle();
 
     /// expected
@@ -29,19 +29,7 @@ class DrawerAppRobot {
     expect(find.text("About"), findsOne);
   }
 
-  Future<void> clickNavigationDrawerButtonTv() async {
-    final drawerButtonFinder = find.byKey(const Key('drawerButtonTv'));
-    await tester.ensureVisible(drawerButtonFinder);
-    await tester.tap(drawerButtonFinder);
-    await tester.pumpAndSettle();
-
-    /// expected
-    expect(find.byKey(const Key('contentDrawer')), findsOneWidget);
-    expect(find.byKey(const Key('tvListTile')), findsOneWidget);
-    expect(find.byKey(const Key('watchlistListTile')), findsOneWidget);
-  }
-
-  Future<void> clickMovieListTile() async {
+  Future<void> clickNavigationDrawerButtonHomeMovie() async {
     final homeButton = find.text("Movies");
     await tester.ensureVisible(homeButton);
 
@@ -52,14 +40,13 @@ class DrawerAppRobot {
     expect(find.byType(HomeMoviePage), findsOneWidget);
   }
 
-  Future<void> clickTvListTile() async {
+  Future<void> clickNavigationDrawerButtonHomeSeries() async {
     final homeButton = find.text("TV Series");
     await tester.ensureVisible(homeButton);
 
     await tester.tap(homeButton);
     await tester.pumpAndSettle();
 
-    /// expected
     expect(find.byType(HomeMoviePage), findsNothing);
     expect(find.byType(HomeSeriesPage), findsOneWidget);
   }

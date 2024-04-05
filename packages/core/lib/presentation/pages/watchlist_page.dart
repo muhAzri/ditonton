@@ -187,7 +187,10 @@ class SeriesContent extends StatelessWidget {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final serie = state.series[index];
-                  return SeriesCard(serie);
+                  return SeriesCard(
+                    serie,
+                    key: Key("watchlist_series_item_$index"),
+                  );
                 },
                 itemCount: state.series.length,
               );

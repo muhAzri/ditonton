@@ -14,6 +14,7 @@ import 'package:movie/domain/usecases/usecases.dart';
 import 'package:series/bloc/home_series/home_series_bloc.dart';
 import 'package:series/bloc/on_air_series/on_air_series_bloc.dart';
 import 'package:series/bloc/popular_series.dart/popular_series_bloc.dart';
+import 'package:series/bloc/search_series/search_series_bloc.dart';
 import 'package:series/bloc/series_detail/series_detail_bloc.dart';
 import 'package:series/bloc/top_rated_series/top_rated_series_bloc.dart';
 import 'package:series/bloc/watchlist_series/watchlist_series_bloc.dart';
@@ -114,6 +115,12 @@ Future<void> init() async {
   locator.registerFactory(
     () => WatchlistSeriesBloc(
       getWatchlistSeries: locator(),
+    ),
+  );
+
+  locator.registerFactory(
+    () => SearchSeriesBloc(
+      searchSeries: locator(),
     ),
   );
 
