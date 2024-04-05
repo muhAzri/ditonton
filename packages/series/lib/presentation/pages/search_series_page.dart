@@ -38,6 +38,7 @@ class SearchSeriesContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
+            key: const Key("text_field_search_series"),
             onSubmitted: (query) {
               context.read<SearchSeriesBloc>().add(SearchEvent(query));
             },
@@ -68,7 +69,10 @@ class SearchSeriesContent extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     itemBuilder: (context, index) {
                       final serie = result[index];
-                      return SeriesCard(serie);
+                      return SeriesCard(
+                        serie,
+                        key: Key("search_series_item_$index"),
+                      );
                     },
                     itemCount: result.length,
                   ),

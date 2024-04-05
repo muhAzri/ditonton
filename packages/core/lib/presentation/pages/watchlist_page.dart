@@ -136,7 +136,10 @@ class MovieContent extends StatelessWidget {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final movie = state.movies[index];
-                  return MovieCard(movie);
+                  return MovieCard(
+                    movie,
+                    key: Key("watchlist_movie_item_$index"),
+                  );
                 },
                 itemCount: state.movies.length,
               );
@@ -184,7 +187,10 @@ class SeriesContent extends StatelessWidget {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final serie = state.series[index];
-                  return SeriesCard(serie);
+                  return SeriesCard(
+                    serie,
+                    key: Key("watchlist_series_item_$index"),
+                  );
                 },
                 itemCount: state.series.length,
               );

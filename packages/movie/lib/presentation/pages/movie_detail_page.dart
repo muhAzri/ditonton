@@ -137,6 +137,7 @@ class _DetailContentState extends State<DetailContent> {
             child: DraggableScrollableSheet(
               builder: (context, scrollController) {
                 return Container(
+                  key: const Key("movie_detail_scrollable_container"),
                   decoration: const BoxDecoration(
                     color: kRichBlack,
                     borderRadius:

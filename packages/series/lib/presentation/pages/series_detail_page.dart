@@ -136,6 +136,7 @@ class _DetailContentState extends State<DetailContent> {
             child: DraggableScrollableSheet(
               builder: (context, scrollController) {
                 return Container(
+                  key: const Key("series_detail_scrollable_container"),
                   decoration: const BoxDecoration(
                     color: kRichBlack,
                     borderRadius:
@@ -317,6 +318,7 @@ class RecommendationSeries extends StatelessWidget {
     return SizedBox(
       height: 150,
       child: ListView.builder(
+        key: const Key("recommendation_series_list"),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           final serie = recommendations[index];

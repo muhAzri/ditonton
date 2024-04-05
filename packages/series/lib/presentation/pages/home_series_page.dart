@@ -40,6 +40,7 @@ class HomeSeriesPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildSubHeading(
+                keyPrefix: "btn_on_air",
                 title: 'Now On Air',
                 onTap: () =>
                     Navigator.pushNamed(context, OnAirSeriesPage.routeName),
@@ -48,6 +49,7 @@ class HomeSeriesPage extends StatelessWidget {
                 locator: locator,
               ),
               _buildSubHeading(
+                keyPrefix: "btn_popular",
                 title: 'Popular',
                 onTap: () =>
                     Navigator.pushNamed(context, PopularSeriesPage.routeName),
@@ -56,6 +58,7 @@ class HomeSeriesPage extends StatelessWidget {
                 locator: locator,
               ),
               _buildSubHeading(
+                keyPrefix: "btn_top_rated",
                 title: 'Top Rated',
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedSeriesPage.routeName),
@@ -70,7 +73,11 @@ class HomeSeriesPage extends StatelessWidget {
     );
   }
 
-  Row _buildSubHeading({required String title, required Function() onTap}) {
+  Row _buildSubHeading({
+    required String title,
+    required Function() onTap,
+    required String keyPrefix,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -79,6 +86,7 @@ class HomeSeriesPage extends StatelessWidget {
           style: kHeading6,
         ),
         InkWell(
+          key: Key("${keyPrefix}_series"),
           onTap: onTap,
           child: const Padding(
             padding: EdgeInsets.all(8.0),
@@ -168,7 +176,10 @@ class OnAirSeriesSection extends StatelessWidget {
           }
 
           if (state is OnAirSeriesLoaded) {
-            return SeriesList(state.onAirSeries);
+            return SeriesList(
+              state.onAirSeries,
+              keyPrefix: "on_air_series",
+            );
           }
 
           return const Center(
@@ -202,7 +213,10 @@ class PopularSeriesSection extends StatelessWidget {
           }
 
           if (state is PopularSeriesLoaded) {
-            return SeriesList(state.popularSeries);
+            return SeriesList(
+              state.popularSeries,
+              keyPrefix: "popular_series",
+            );
           }
 
           return const Center(
@@ -236,7 +250,10 @@ class TopRatedSeriesSection extends StatelessWidget {
           }
 
           if (state is TopRatedSeriesLoaded) {
-            return SeriesList(state.topRatedSeries);
+            return SeriesList(
+              state.topRatedSeries,
+              keyPrefix: "top_rated_series",
+            );
           }
 
           return const Center(
@@ -250,8 +267,9 @@ class TopRatedSeriesSection extends StatelessWidget {
 
 class SeriesList extends StatelessWidget {
   final List<Series> movies;
+  final String keyPrefix;
 
-  const SeriesList(this.movies, {super.key});
+  const SeriesList(this.movies, {super.key, required this.keyPrefix});
 
   @override
   Widget build(BuildContext context) {
@@ -262,6 +280,7 @@ class SeriesList extends StatelessWidget {
         itemBuilder: (context, index) {
           final serie = movies[index];
           return Container(
+            key: Key("${keyPrefix}_item_$index"),
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
