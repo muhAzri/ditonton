@@ -32,6 +32,7 @@ class SeriesCard extends StatelessWidget {
                   bottom: 8,
                   right: 8,
                 ),
+                width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
